@@ -4,8 +4,7 @@ const leftPad = (value, n, padder = " ") => String(value).padStart(n, padder);
 const rightPad = (value, n, padder = " ") => String(value).padEnd(n, padder);
 const print = console.log.bind(console);
 
-const latestPolls = maxBy(require("../data/rankings_raw_2018.json"), "week")
-  .polls;
+const latestPolls = require("../data/rankings/current.json").polls;
 const pollsByName = keyBy(latestPolls, ({ poll }) => poll);
 
 const prettyPrintedPolls = mapValues(pollsByName, ({ ranks }) =>

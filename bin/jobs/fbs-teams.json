@@ -1,0 +1,5 @@
+{
+  "job": "fbs-teams",
+  "output_path": "fbs-teams.json",
+  "dependencies": ["all-teams"]
+}

@@ -1,0 +1,5 @@
+{
+  "job": "current-rankings",
+  "output_path": "rankings/current.json",
+  "dependencies": ["rankings-2018", "rankings-2019"]
+}
