@@ -27,4 +27,4 @@ fi
 
 mkdir -p "$(dirname "$fbs_teams_path")"
 
-jq 'map(select(.conference))' "$all_teams_path" >"$fbs_teams_path"
+jq 'map(select(.conference)) | map({key: .school, value: .}) | from_entries' "$all_teams_path" >"$fbs_teams_path"
