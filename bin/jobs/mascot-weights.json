@@ -1,0 +1,5 @@
+{
+  "job": "mascot-weights",
+  "output_path": "mascot-weights.json",
+  "dependencies": ["fbs-teams"]
+}
