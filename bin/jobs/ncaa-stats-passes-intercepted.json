@@ -1,0 +1,8 @@
+{
+  "category": "Passes Intercepted",
+  "output_path": "ncaa-stats/passes-intercepted.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "category": "Team Sacks",
+  "output_path": "ncaa-stats/team-sacks.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

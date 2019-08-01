@@ -1,0 +1,8 @@
+{
+  "category": "Blocked Kicks Allowed",
+  "output_path": "ncaa-stats/blocked-kicks-allowed.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

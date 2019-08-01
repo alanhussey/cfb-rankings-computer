@@ -1,0 +1,8 @@
+{
+  "category": "Punt Returns",
+  "output_path": "ncaa-stats/punt-returns.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

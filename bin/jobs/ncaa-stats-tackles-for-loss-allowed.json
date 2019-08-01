@@ -1,0 +1,8 @@
+{
+  "category": "Tackles for Loss Allowed",
+  "output_path": "ncaa-stats/tackles-for-loss-allowed.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

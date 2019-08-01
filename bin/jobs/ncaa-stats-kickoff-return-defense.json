@@ -1,0 +1,8 @@
+{
+  "category": "Kickoff Return Defense",
+  "output_path": "ncaa-stats/kickoff-return-defense.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

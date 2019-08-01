@@ -16,4 +16,13 @@ job=$(get_config job)
 
 echo "Running $job for config $config_path"
 
-"$SCRIPTDIR/$job.sh" "$@"
+if [ -f "$SCRIPTDIR/$job.sh" ]; then
+    "$SCRIPTDIR/$job.sh" "$@"
+else
+    if [ -f "$SCRIPTDIR/$job.js" ]; then
+        "$SCRIPTDIR/$job.js" "$@"
+    else
+        echo "Could not find job named $job"
+        exit 1
+    fi
+fi

@@ -1,0 +1,8 @@
+{
+  "category": "Rushing Offense",
+  "output_path": "ncaa-stats/rushing-offense.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

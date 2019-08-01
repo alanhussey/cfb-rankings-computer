@@ -1,0 +1,8 @@
+{
+  "category": "First Downs Offense",
+  "output_path": "ncaa-stats/first-downs-offense.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

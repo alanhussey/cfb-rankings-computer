@@ -1,0 +1,8 @@
+{
+  "category": "3rd Down Conversion Pct",
+  "output_path": "ncaa-stats/3rd-down-conversion-pct.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

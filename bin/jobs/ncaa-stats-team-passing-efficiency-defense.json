@@ -1,0 +1,8 @@
+{
+  "category": "Team Passing Efficiency Defense",
+  "output_path": "ncaa-stats/team-passing-efficiency-defense.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

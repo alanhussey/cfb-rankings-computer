@@ -1,0 +1,8 @@
+{
+  "category": "Defensive TDs",
+  "output_path": "ncaa-stats/defensive-tds.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

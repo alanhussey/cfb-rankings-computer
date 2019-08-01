@@ -1,0 +1,8 @@
+{
+  "category": "Turnovers Gained",
+  "output_path": "ncaa-stats/turnovers-gained.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "category": "Fewest Penalties Per Game",
+  "output_path": "ncaa-stats/fewest-penalties-per-game.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

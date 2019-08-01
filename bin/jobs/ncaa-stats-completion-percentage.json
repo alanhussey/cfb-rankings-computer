@@ -1,0 +1,8 @@
+{
+  "category": "Completion Percentage",
+  "output_path": "ncaa-stats/completion-percentage.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "category": "Fumbles Recovered",
+  "output_path": "ncaa-stats/fumbles-recovered.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

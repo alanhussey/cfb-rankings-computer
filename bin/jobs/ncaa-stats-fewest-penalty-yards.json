@@ -1,0 +1,8 @@
+{
+  "category": "Fewest Penalty Yards",
+  "output_path": "ncaa-stats/fewest-penalty-yards.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

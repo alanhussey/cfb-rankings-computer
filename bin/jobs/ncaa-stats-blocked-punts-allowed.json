@@ -1,0 +1,8 @@
+{
+  "category": "Blocked Punts Allowed",
+  "output_path": "ncaa-stats/blocked-punts-allowed.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

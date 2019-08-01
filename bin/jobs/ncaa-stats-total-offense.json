@@ -1,0 +1,8 @@
+{
+  "category": "Total Offense",
+  "output_path": "ncaa-stats/total-offense.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

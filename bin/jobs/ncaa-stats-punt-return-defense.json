@@ -1,0 +1,8 @@
+{
+  "category": "Punt Return Defense",
+  "output_path": "ncaa-stats/punt-return-defense.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "category": "Turnovers Lost",
+  "output_path": "ncaa-stats/turnovers-lost.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

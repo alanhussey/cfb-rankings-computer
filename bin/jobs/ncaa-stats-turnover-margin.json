@@ -1,0 +1,8 @@
+{
+  "category": "Turnover Margin",
+  "output_path": "ncaa-stats/turnover-margin.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

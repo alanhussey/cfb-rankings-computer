@@ -1,0 +1,8 @@
+{
+  "category": "Sacks Allowed",
+  "output_path": "ncaa-stats/sacks-allowed.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

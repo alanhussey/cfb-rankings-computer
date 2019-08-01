@@ -1,0 +1,8 @@
+{
+  "category": "Team Tackles for Loss",
+  "output_path": "ncaa-stats/team-tackles-for-loss.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

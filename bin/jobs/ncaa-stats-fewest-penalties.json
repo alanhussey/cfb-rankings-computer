@@ -1,0 +1,8 @@
+{
+  "category": "Fewest Penalties",
+  "output_path": "ncaa-stats/fewest-penalties.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

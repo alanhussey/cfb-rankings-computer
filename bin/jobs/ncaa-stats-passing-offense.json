@@ -1,0 +1,8 @@
+{
+  "category": "Passing Offense",
+  "output_path": "ncaa-stats/passing-offense.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

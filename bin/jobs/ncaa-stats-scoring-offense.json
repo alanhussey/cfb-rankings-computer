@@ -1,0 +1,8 @@
+{
+  "category": "Scoring Offense",
+  "output_path": "ncaa-stats/scoring-offense.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

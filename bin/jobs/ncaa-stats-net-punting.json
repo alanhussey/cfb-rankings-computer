@@ -1,0 +1,8 @@
+{
+  "category": "Net Punting",
+  "output_path": "ncaa-stats/net-punting.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "category": "Time of Possession",
+  "output_path": "ncaa-stats/time-of-possession.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}

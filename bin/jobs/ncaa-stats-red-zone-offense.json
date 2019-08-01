@@ -1,0 +1,8 @@
+{
+  "category": "Red Zone Offense",
+  "output_path": "ncaa-stats/red-zone-offense.json",
+  "job": "ncaa-stat",
+  "dependencies": [
+    "ncaa-stats-categories"
+  ]
+}
