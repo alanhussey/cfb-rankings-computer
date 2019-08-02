@@ -42,52 +42,59 @@ function App() {
   }, []);
 
   // Selected data points for sorting
-  const [factors /*, setFactors */] = useState([
+  const [factors, setFactors] = useState([
     { key: "mascotWeight", order: DESCENDING },
     { key: "winningPercentage", order: DESCENDING }
   ]);
 
   // Available data points
-  const [data, setData] = useState(
+  const [dataSources, setDataSources] = useState(
     fromPairs(DATA_SOURCES.map(source => [source.key, source.initialState]))
   );
   useEffect(() => {
-    if (teams != null) {
+    async function fetchSources() {
       const teamNames = Object.keys(teams);
       const selectedSources = factors.map(factor => factor.key);
-      Promise.all(
+
+      const fetchedSources = await Promise.all(
         DATA_SOURCES.filter(source => selectedSources.includes(source.key)).map(
           async source => {
             const data = await source.fetch();
             return [source.key, source.process(data, teamNames)];
           }
         )
-      ).then(data => setData(fromPairs(data)));
+      );
+
+      setDataSources(fromPairs(fetchedSources));
     }
+
+    if (teams != null) fetchSources();
   }, [factors, teams]);
 
   // Teams with data points mixed in
   const teamsWithFactors = useMemo(() => {
-    if (!teams || Object.values(data).every(isEmpty)) return;
+    if (!teams || Object.values(dataSources).every(isEmpty)) return;
 
     return Object.values(teams || {}).map(team => ({
       team,
       ...factors.reduce(
         (facts, factor) => ({
           ...facts,
-          [factor.key]: data[factor.key][team.school].value
+          [factor.key]: dataSources[factor.key][team.school].value
         }),
         {}
       )
     }));
-  }, [teams, data, factors]);
+  }, [teams, dataSources, factors]);
 
   // Teams ranked by the selected factors
   const rankedTeams = rankBy(teamsWithFactors, factors);
 
   return (
     <>
-      <h2>Build-a-ranking</h2>
+      <h2 onClick={() => setFactors([...factors].reverse())}>
+        Build-a-ranking
+      </h2>
       <p>
         Sort teams by the following factors, where each factor is a tie-breaker
         for the previous one:
