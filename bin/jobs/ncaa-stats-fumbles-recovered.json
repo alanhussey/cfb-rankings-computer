@@ -1,8 +1,7 @@
 {
   "category": "Fumbles Recovered",
+  "stat_key": "Fum Rec",
   "output_path": "ncaa-stats/fumbles-recovered.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

@@ -1,17 +1,14 @@
 #!/usr/bin/env node
-const path = require("path");
-const fs = require("fs");
-const mkdirp = require("mkdirp");
 const ncaa = require("ncaa-stats");
 
 const NCAA_MENS_FOOTBALL = "MFB";
 const DIVISION_ONE_FBS = 11;
 
-async function main(config) {
+async function main({ category }) {
   const { teams } = await ncaa.stats.getTeamStats({
     sport: NCAA_MENS_FOOTBALL,
     division: DIVISION_ONE_FBS,
-    category: require("../data/ncaa-stats/categories.json")[config.category]
+    category: require("../data/ncaa-stats/categories.json")[category]
   });
 
   if (!Array.isArray(teams)) {
@@ -23,17 +20,15 @@ async function main(config) {
     process.exit(1);
   }
 
-  const outputPath = path.join(__dirname, "../data", config.output_path);
-
-  mkdirp.sync(path.dirname(outputPath));
-
-  fs.writeFileSync(outputPath, JSON.stringify(teams, null, 2), {
-    encoding: "utf8"
+  process.stdout.write(JSON.stringify(teams, null, 2), error => {
+    if (error) {
+      console.error(error);
+      process.exit(1);
+    }
   });
 }
 
 if (require.main === module) {
-  const [configPath] = process.argv.slice(2);
-  const config = JSON.parse(fs.readFileSync(configPath));
-  main(config);
+  const [category] = process.argv.slice(2);
+  main({ category });
 }

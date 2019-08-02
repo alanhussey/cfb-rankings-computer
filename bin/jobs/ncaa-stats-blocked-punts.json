@@ -1,8 +1,7 @@
 {
   "category": "Blocked Punts",
+  "stat_key": "Blkd Punts",
   "output_path": "ncaa-stats/blocked-punts.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

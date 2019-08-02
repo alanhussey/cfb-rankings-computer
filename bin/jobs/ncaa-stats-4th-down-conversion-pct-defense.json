@@ -1,8 +1,7 @@
 {
   "category": "4th Down Conversion Pct Defense",
+  "stat_key": "Pct",
   "output_path": "ncaa-stats/4th-down-conversion-pct-defense.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

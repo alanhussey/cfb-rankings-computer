@@ -1,8 +1,7 @@
 {
   "category": "Scoring Defense",
+  "stat_key": "Avg",
   "output_path": "ncaa-stats/scoring-defense.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

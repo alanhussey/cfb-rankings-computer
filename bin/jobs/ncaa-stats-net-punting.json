@@ -1,8 +1,7 @@
 {
   "category": "Net Punting",
+  "stat_key": "Net Yds",
   "output_path": "ncaa-stats/net-punting.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

@@ -1,8 +1,7 @@
 {
   "category": "Scoring Offense",
+  "stat_key": "PPG",
   "output_path": "ncaa-stats/scoring-offense.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

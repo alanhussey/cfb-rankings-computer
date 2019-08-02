@@ -1,8 +1,7 @@
 {
   "category": "Red Zone Offense",
+  "stat_key": "Pct",
   "output_path": "ncaa-stats/red-zone-offense.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

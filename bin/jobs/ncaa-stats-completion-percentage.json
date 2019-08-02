@@ -1,8 +1,7 @@
 {
   "category": "Completion Percentage",
+  "stat_key": "Pct",
   "output_path": "ncaa-stats/completion-percentage.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

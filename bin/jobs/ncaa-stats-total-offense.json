@@ -1,8 +1,7 @@
 {
   "category": "Total Offense",
+  "stat_key": "YPG",
   "output_path": "ncaa-stats/total-offense.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

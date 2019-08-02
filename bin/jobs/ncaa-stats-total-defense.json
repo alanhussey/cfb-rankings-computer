@@ -1,8 +1,7 @@
 {
   "category": "Total Defense",
+  "stat_key": "YPG",
   "output_path": "ncaa-stats/total-defense.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

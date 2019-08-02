@@ -1,8 +1,7 @@
 {
   "category": "Passing Offense",
+  "stat_key": "YPG",
   "output_path": "ncaa-stats/passing-offense.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

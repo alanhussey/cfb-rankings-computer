@@ -1,8 +1,7 @@
 {
   "category": "Team Passing Efficiency Defense",
+  "stat_key": "Pass Eff",
   "output_path": "ncaa-stats/team-passing-efficiency-defense.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

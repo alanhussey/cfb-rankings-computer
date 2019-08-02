@@ -1,8 +1,7 @@
 {
   "category": "Passing Yards per Completion",
+  "stat_key": "Avg",
   "output_path": "ncaa-stats/passing-yards-per-completion.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

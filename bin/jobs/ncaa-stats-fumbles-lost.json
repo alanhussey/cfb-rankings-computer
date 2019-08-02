@@ -1,8 +1,7 @@
 {
   "category": "Fumbles Lost",
+  "stat_key": "Fum Lost",
   "output_path": "ncaa-stats/fumbles-lost.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

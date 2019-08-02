@@ -1,8 +1,7 @@
 {
   "category": "Kickoff Return Defense",
+  "stat_key": "Avg",
   "output_path": "ncaa-stats/kickoff-return-defense.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

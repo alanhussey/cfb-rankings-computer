@@ -1,8 +1,7 @@
 {
   "category": "Time of Possession",
+  "stat_key": "AvgTOP",
   "output_path": "ncaa-stats/time-of-possession.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }

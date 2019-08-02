@@ -1,8 +1,7 @@
 {
   "category": "Punt Return Defense",
+  "stat_key": "Avg",
   "output_path": "ncaa-stats/punt-return-defense.json",
   "job": "ncaa-stat",
-  "dependencies": [
-    "ncaa-stats-categories"
-  ]
+  "dependencies": ["ncaa-stats-categories"]
 }
