@@ -41,6 +41,12 @@ function App() {
       .then(data => setTeams(data));
   }, []);
 
+  // Selected data points for sorting
+  const [factors /*, setFactors */] = useState([
+    { key: "mascotWeight", order: DESCENDING },
+    { key: "winningPercentage", order: DESCENDING }
+  ]);
+
   // Available data points
   const [data, setData] = useState(
     fromPairs(DATA_SOURCES.map(source => [source.key, source.initialState]))
@@ -48,20 +54,17 @@ function App() {
   useEffect(() => {
     if (teams != null) {
       const teamNames = Object.keys(teams);
+      const selectedSources = factors.map(factor => factor.key);
       Promise.all(
-        DATA_SOURCES.map(async source => {
-          const data = await source.fetch();
-          return [source.key, source.process(data, teamNames)];
-        })
+        DATA_SOURCES.filter(source => selectedSources.includes(source.key)).map(
+          async source => {
+            const data = await source.fetch();
+            return [source.key, source.process(data, teamNames)];
+          }
+        )
       ).then(data => setData(fromPairs(data)));
     }
-  }, [teams]);
-
-  // Selected data points for sorting
-  const [factors /*, setFactors */] = useState([
-    { key: "mascotWeight", order: DESCENDING },
-    { key: "winningPercentage", order: DESCENDING }
-  ]);
+  }, [factors, teams]);
 
   // Teams with data points mixed in
   const teamsWithFactors = useMemo(() => {
