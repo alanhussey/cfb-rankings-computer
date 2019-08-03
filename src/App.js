@@ -93,6 +93,14 @@ function App() {
 
   // Teams ranked by the selected factors
   const rankedTeams = rankBy(teamsWithFactors, factors);
+  const stats = factors.map(factor => {
+    const source = DATA_SOURCES.find(source => source.key === factor.key);
+    return {
+      key: factor.key,
+      name: source.name,
+      render: value => source.render(value)
+    };
+  });
 
   return (
     <>
@@ -136,6 +144,9 @@ function App() {
               {sources.map(source => (
                 <li key={source.key}>
                   <button
+                    disabled={
+                      !!factors.find(factor => factor.key === source.key)
+                    }
                     onClick={() =>
                       setFactors([
                         ...factors,
@@ -154,7 +165,7 @@ function App() {
         ))}
       </ul>
 
-      <RankedTeams teams={rankedTeams} />
+      <RankedTeams teams={rankedTeams} stats={stats} />
     </>
   );
 }

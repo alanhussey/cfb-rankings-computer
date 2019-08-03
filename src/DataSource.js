@@ -26,7 +26,8 @@ class DataSource {
     description = "",
     category = CATEGORY_OTHER,
     defaultOrder = "desc",
-    initialState = null
+    initialState = null,
+    render = String
   }) {
     Object.assign(this, {
       name,
@@ -34,7 +35,8 @@ class DataSource {
       description,
       category,
       defaultOrder,
-      initialState
+      initialState,
+      render
     });
   }
   fetch() {
@@ -66,13 +68,25 @@ class FetchDataSource extends DataSource {
   }
 }
 
+function getRender(dataType) {
+  switch (dataType) {
+    case "percent":
+      return value => `${(value * 100).toFixed(2)}%`;
+
+    default:
+      return undefined;
+  }
+}
+
 class NCAAStatDataSource extends FetchDataSource {
   constructor(options) {
     const slug = options.name.toLowerCase().replace(/[^a-z0-9]/g, "-");
+
     super({
       ...options,
       key: camelCase(slug),
-      href: `ncaa-stats/${slug}.json`
+      href: `ncaa-stats/${slug}.json`,
+      render: getRender(options.dataType)
     });
   }
   process(data) {
@@ -199,7 +213,11 @@ const NCAA_STATS = [
   { name: "Turnover Margin", category: CATEGORY_OVERALL },
   { name: "Turnovers Gained", category: CATEGORY_OVERALL },
   { name: "Turnovers Lost", category: CATEGORY_OVERALL, defaultOrder: "asc" },
-  { name: "Winning Percentage", category: CATEGORY_OVERALL }
+  {
+    name: "Winning Percentage",
+    category: CATEGORY_OVERALL,
+    dataType: "percent"
+  }
 ];
 
 const RANDOM = new GeneratedDataSource({
@@ -219,7 +237,7 @@ const RANDOM = new GeneratedDataSource({
 });
 
 const MASCOT_WEIGHTS = new FetchDataSource({
-  name: "Mascot weights",
+  name: "Mascot weight (lbs.)",
   key: "mascotWeight",
   description:
     "Per Jon Bois and SBNation https://www.youtube.com/watch?v=obtRtrk42a8",
@@ -233,7 +251,11 @@ const MASCOT_WEIGHTS = new FetchDataSource({
       value,
       rank: ranks.indexOf(value) + 1
     }));
-  }
+  },
+  render:
+    window.Intl && Intl.NumberFormat
+      ? value => new Intl.NumberFormat().format(value)
+      : value => value
 });
 
 export const DATA_SOURCES = [

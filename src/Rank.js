@@ -18,7 +18,7 @@ export default function Rank({ team, rank, children }) {
           {mascot}
         </span>
       </td>
-      <td>{children}</td>
+      {children}
     </tr>
   );
 }
