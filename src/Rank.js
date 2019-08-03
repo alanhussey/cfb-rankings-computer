@@ -9,13 +9,16 @@ export default function Rank({ team, rank, children }) {
   const darkestColor = minBy(colors, luminance);
 
   return (
-    <li key={school}>
-      {rank}.
-      <img src={logos[0]} alt="" width="24" />
-      {school}{" "}
-      <span style={{ color: darkestColor, fontStyle: "italic" }}>{mascot}</span>
-      <br />
-      {children}
-    </li>
+    <tr>
+      <td>{rank}</td>
+      <td>
+        <img src={logos[0]} alt="" width="24" />
+        {school}{" "}
+        <span style={{ color: darkestColor, fontStyle: "italic" }}>
+          {mascot}
+        </span>
+      </td>
+      <td>{children}</td>
+    </tr>
   );
 }

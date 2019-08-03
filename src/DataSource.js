@@ -5,13 +5,35 @@ import camelCase from "lodash/camelCase";
 import fromPairs from "lodash/fromPairs";
 import getCorrectTeamName from "./getCorrectTeamName";
 
+const CATEGORY_OFFENSE = "Offense";
+const CATEGORY_DEFENSE = "Defense";
+const CATEGORY_SPECIAL = "Special Teams";
+const CATEGORY_OVERALL = "Overall";
+const CATEGORY_OTHER = "Other";
+
+export const CATEGORIES = [
+  CATEGORY_OVERALL,
+  CATEGORY_OFFENSE,
+  CATEGORY_DEFENSE,
+  CATEGORY_SPECIAL,
+  CATEGORY_OTHER
+];
+
 class DataSource {
-  constructor({ name, key, description = "", id, initialState = null }) {
+  constructor({
+    name,
+    key,
+    description = "",
+    category = CATEGORY_OTHER,
+    defaultOrder = "desc",
+    initialState = null
+  }) {
     Object.assign(this, {
       name,
       key,
       description,
-      id,
+      category,
+      defaultOrder,
       initialState
     });
   }
@@ -83,64 +105,112 @@ const CURRENT_RANKINGS = new FetchDataSource({
 */
 
 const NCAA_STATS = [
-  "3rd Down Conversion Pct",
-  "3rd Down Conversion Pct Defense",
-  "4th Down Conversion Pct",
-  "4th Down Conversion Pct Defense",
-  "Blocked Kicks",
-  "Blocked Kicks Allowed",
-  "Blocked Punts",
-  "Blocked Punts Allowed",
-  "Completion Percentage",
-  "Defensive TDs",
-  "Fewest Penalties",
-  "Fewest Penalties Per Game",
-  "Fewest Penalty Yards",
-  "Fewest Penalty Yards Per Game",
-  "First Downs Defense",
-  "First Downs Offense",
-  "Fumbles Lost",
-  "Fumbles Recovered",
-  "Kickoff Return Defense",
-  "Kickoff Returns",
-  "Net Punting",
-  "Passes Had Intercepted",
-  "Passes Intercepted",
-  "Passing Offense",
-  "Passing Yards Allowed",
-  "Passing Yards per Completion",
-  "Punt Return Defense",
-  "Punt Returns",
-  "Red Zone Defense",
-  "Red Zone Offense",
-  "Rushing Defense",
-  "Rushing Offense",
-  "Sacks Allowed",
-  "Scoring Defense",
-  "Scoring Offense",
-  "Tackles for Loss Allowed",
-  "Team Passing Efficiency",
-  "Team Passing Efficiency Defense",
-  "Team Sacks",
-  "Team Tackles for Loss",
-  "Time of Possession",
-  "Total Defense",
-  "Total Offense",
-  "Turnover Margin",
-  "Turnovers Gained",
-  "Turnovers Lost",
-  "Winning Percentage"
+  { name: "3rd Down Conversion Pct", category: CATEGORY_OFFENSE },
+  { name: "3rd Down Conversion Pct Defense", category: CATEGORY_DEFENSE },
+  { name: "4th Down Conversion Pct", category: CATEGORY_OFFENSE },
+  { name: "4th Down Conversion Pct Defense", category: CATEGORY_DEFENSE },
+  { name: "Blocked Kicks", category: CATEGORY_SPECIAL },
+  {
+    name: "Blocked Kicks Allowed",
+    category: CATEGORY_SPECIAL,
+    defaultOrder: "asc"
+  },
+  { name: "Blocked Punts", category: CATEGORY_SPECIAL },
+  {
+    name: "Blocked Punts Allowed",
+    category: CATEGORY_SPECIAL,
+    defaultOrder: "asc"
+  },
+  { name: "Completion Percentage", category: CATEGORY_OFFENSE },
+  { name: "Defensive TDs", category: CATEGORY_DEFENSE },
+  { name: "Fewest Penalties", category: CATEGORY_OVERALL, defaultOrder: "asc" },
+  {
+    name: "Fewest Penalties Per Game",
+    category: CATEGORY_OVERALL,
+    defaultOrder: "asc"
+  },
+  {
+    name: "Fewest Penalty Yards",
+    category: CATEGORY_OVERALL,
+    defaultOrder: "asc"
+  },
+  {
+    name: "Fewest Penalty Yards Per Game",
+    category: CATEGORY_OVERALL,
+    defaultOrder: "asc"
+  },
+  {
+    name: "First Downs Defense",
+    category: CATEGORY_DEFENSE,
+    defaultOrder: "asc"
+  },
+  { name: "First Downs Offense", category: CATEGORY_OFFENSE },
+  { name: "Fumbles Lost", category: CATEGORY_OVERALL, defaultOrder: "asc" },
+  { name: "Fumbles Recovered", category: CATEGORY_OVERALL },
+  {
+    name: "Kickoff Return Defense",
+    category: CATEGORY_DEFENSE,
+    defaultOrder: "asc"
+  },
+  { name: "Kickoff Returns", category: CATEGORY_SPECIAL },
+  { name: "Net Punting", category: CATEGORY_SPECIAL },
+  {
+    name: "Passes Had Intercepted",
+    category: CATEGORY_OFFENSE,
+    defaultOrder: "asc"
+  },
+  { name: "Passes Intercepted", category: CATEGORY_DEFENSE },
+  { name: "Passing Offense", category: CATEGORY_OFFENSE },
+  {
+    name: "Passing Yards Allowed",
+    category: CATEGORY_DEFENSE,
+    defaultOrder: "asc"
+  },
+  { name: "Passing Yards per Completion", category: CATEGORY_OFFENSE },
+  {
+    name: "Punt Return Defense",
+    category: CATEGORY_DEFENSE,
+    defaultOrder: "asc"
+  },
+  { name: "Punt Returns", category: CATEGORY_SPECIAL },
+  { name: "Red Zone Defense", category: CATEGORY_DEFENSE, defaultOrder: "asc" },
+  { name: "Red Zone Offense", category: CATEGORY_OFFENSE },
+  { name: "Rushing Defense", category: CATEGORY_DEFENSE, defaultOrder: "asc" },
+  { name: "Rushing Offense", category: CATEGORY_OFFENSE },
+  { name: "Sacks Allowed", category: CATEGORY_OFFENSE, defaultOrder: "asc" },
+  { name: "Scoring Defense", category: CATEGORY_DEFENSE, defaultOrder: "asc" },
+  { name: "Scoring Offense", category: CATEGORY_OFFENSE },
+  {
+    name: "Tackles for Loss Allowed",
+    category: CATEGORY_OFFENSE,
+    defaultOrder: "asc"
+  },
+  { name: "Team Passing Efficiency", category: CATEGORY_OFFENSE },
+  {
+    name: "Team Passing Efficiency Defense",
+    category: CATEGORY_DEFENSE,
+    defaultOrder: "asc"
+  },
+  { name: "Team Sacks", category: CATEGORY_DEFENSE },
+  { name: "Team Tackles for Loss", category: CATEGORY_DEFENSE },
+  { name: "Time of Possession", category: CATEGORY_OFFENSE },
+  { name: "Total Defense", category: CATEGORY_DEFENSE, defaultOrder: "asc" },
+  { name: "Total Offense", category: CATEGORY_OFFENSE },
+  { name: "Turnover Margin", category: CATEGORY_OVERALL },
+  { name: "Turnovers Gained", category: CATEGORY_OVERALL },
+  { name: "Turnovers Lost", category: CATEGORY_OVERALL, defaultOrder: "asc" },
+  { name: "Winning Percentage", category: CATEGORY_OVERALL }
 ];
 
 const RANDOM = new GeneratedDataSource({
   name: "Random",
   key: "random",
   description:
-    "Each team is given a random score, updated on every page refresh",
+    "Each team is given a random score, randomized on every page refresh",
 
   process(data, teams) {
     const values = fromPairs(teams.map(team => [team, Math.random()]));
-    const ranks = sortBy(Object.values(values)).reverse();
+    const ranks = Object.values(values).sort();
     return mapValues(data, (_, key) => ({
       value: values[key],
       rank: ranks.indexOf(values[key]) + 1
@@ -169,5 +239,5 @@ const MASCOT_WEIGHTS = new FetchDataSource({
 export const DATA_SOURCES = [
   RANDOM,
   MASCOT_WEIGHTS,
-  ...NCAA_STATS.map(name => new NCAAStatDataSource({ name }))
+  ...NCAA_STATS.map(opts => new NCAAStatDataSource(opts))
 ];
