@@ -1,7 +1,7 @@
 import React from "react";
 import Rank from "./Rank";
 
-export default function RankedTeams({ teams, stats }) {
+export default function SimpleSortRankedTeams({ teams, stats }) {
   return (
     <table className="App-ranks">
       <thead>

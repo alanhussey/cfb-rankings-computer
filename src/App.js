@@ -6,7 +6,7 @@ import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import React, { useState, useEffect, useMemo } from "react";
 import { FBS_TEAMS, DATA_SOURCES, CATEGORIES } from "./DataSource";
-import RankedTeams from "./RankedTeams";
+import SimpleSortRankedTeams from "./SimpleSortRankedTeams";
 import "./App.css";
 
 const ASCENDING = "asc";
@@ -92,6 +92,20 @@ function App() {
     }));
   }, [teams, dataSources, factors]);
 
+  return (
+    <>
+      <h1>Build-a-ranking</h1>
+
+      <SimpleSort
+        factors={factors}
+        setFactors={setFactors}
+        teams={teamsWithFactors}
+      />
+    </>
+  );
+}
+
+function SimpleSort({ factors, setFactors, teams: teamsWithFactors }) {
   // Teams ranked by the selected factors
   const rankedTeams = rankBy(teamsWithFactors, factors);
   const stats = factors.map(factor => {
@@ -105,7 +119,6 @@ function App() {
 
   return (
     <>
-      <h1> Build-a-ranking </h1>
       <h2>Simple sort</h2>
       <p>The easiest way to build your own computer poll.</p>
       <p>
@@ -166,7 +179,7 @@ function App() {
         ))}
       </ul>
 
-      <RankedTeams teams={rankedTeams} stats={stats} />
+      <SimpleSortRankedTeams teams={rankedTeams} stats={stats} />
     </>
   );
 }
