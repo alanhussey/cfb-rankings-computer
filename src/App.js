@@ -12,8 +12,9 @@ import "./App.css";
 const ASCENDING = "asc";
 const DESCENDING = "desc";
 
+const shallowCopy = obj => ({ ...obj });
+
 function rankBy(teams, factors) {
-  const shallowCopy = obj => ({ ...obj });
   const result = orderBy(
     teams,
     factors.map(factor => factor.key),
