@@ -5,11 +5,13 @@ export default function RankedTeams({ teams, stats }) {
   return (
     <table className="App-ranks">
       <thead>
-        <th>Rank</th>
-        <th>Team</th>
-        {stats.map(({ key, name }) => (
-          <th key={key}>{name}</th>
-        ))}
+        <tr>
+          <th>Rank</th>
+          <th>Team</th>
+          {stats.map(({ key, name }) => (
+            <th key={key}>{name}</th>
+          ))}
+        </tr>
       </thead>
       <tbody>
         {teams.map(({ team, rank, score, ...scores }, index) => (
