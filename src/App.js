@@ -79,9 +79,9 @@ function App() {
   const teamsWithFactors = useMemo(() => {
     // Early-out if we don't have all the data we need yet
     if (!teams || factors.some(factor => isEmpty(dataSources[factor.key])))
-      return;
+      return [];
 
-    return Object.values(teams || {}).map(team => ({
+    return Object.values(teams).map(team => ({
       team,
       ...fromPairs(
         factors.map(factor => [
