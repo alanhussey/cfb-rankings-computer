@@ -1,40 +1,16 @@
-import sortBy from "lodash/sortBy";
-import orderBy from "lodash/orderBy";
 import fromPairs from "lodash/fromPairs";
-import groupBy from "lodash/groupBy";
-import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import React, { useState, useEffect, useMemo } from "react";
-import { FBS_TEAMS, DATA_SOURCES, CATEGORIES } from "./DataSource";
-import SimpleSortRankedTeams from "./SimpleSortRankedTeams";
+
+import { FBS_TEAMS, DATA_SOURCES } from "./DataSource";
+import SimpleSort from "./SimpleSort";
+import EquationEditor from "./EquationEditor";
 import "./App.css";
 
-const ASCENDING = "asc";
-const DESCENDING = "desc";
-
-const shallowCopy = obj => ({ ...obj });
-
-function rankBy(teams, factors) {
-  const result = orderBy(
-    teams,
-    factors.map(factor => factor.key),
-    factors.map(factor => factor.order)
-  ).map(shallowCopy);
-
-  result.forEach((team, index) => {
-    team.score = factors.map(factor => team[factor.key]);
-
-    const previousTeam = result[index - 1];
-    const rank =
-      index > 0 && isEqual(team.score, previousTeam.score)
-        ? previousTeam.rank
-        : index + 1;
-
-    team.rank = rank;
-  });
-
-  return result;
-}
+const RANKING_SYSTEMS = [
+  { id: "simple-sort", name: "Simple sort" },
+  { id: "equation", name: "Score" }
+];
 
 function App() {
   // All FBS teams
@@ -46,10 +22,7 @@ function App() {
   }, []);
 
   // Selected data points for sorting
-  const [factors, setFactors] = useState([
-    { key: "mascotWeight", order: DESCENDING },
-    { key: "winningPercentage", order: DESCENDING }
-  ]);
+  const [factors, setFactors] = useState([]);
 
   // Available data points
   const [dataSources, setDataSources] = useState(
@@ -92,94 +65,37 @@ function App() {
     }));
   }, [teams, dataSources, factors]);
 
+  const [system, setSystem] = useState("equation");
+
+  const SystemComp =
+    {
+      "simple-sort": SimpleSort,
+      equation: EquationEditor
+    }[system] || (() => <h2>Uh oh</h2>);
+
   return (
     <>
       <h1>Build-a-ranking</h1>
+      <label>
+        Choose your ranking system:
+        <select
+          value={system}
+          onChange={event => setSystem(event.target.value)}
+        >
+          {RANKING_SYSTEMS.map(({ id, name }) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </select>
+      </label>
 
-      <SimpleSort
+      <h2>{RANKING_SYSTEMS.find(({ id }) => id === system).name}</h2>
+      <SystemComp
         factors={factors}
         setFactors={setFactors}
         teams={teamsWithFactors}
       />
-    </>
-  );
-}
-
-function SimpleSort({ factors, setFactors, teams: teamsWithFactors }) {
-  // Teams ranked by the selected factors
-  const rankedTeams = rankBy(teamsWithFactors, factors);
-  const stats = factors.map(factor => {
-    const source = DATA_SOURCES.find(source => source.key === factor.key);
-    return {
-      key: factor.key,
-      name: source.name,
-      render: value => source.render(value)
-    };
-  });
-
-  return (
-    <>
-      <h2>Simple sort</h2>
-      <p>The easiest way to build your own computer poll.</p>
-      <p>
-        Select one or more of the following statistics. Teams will be sorted by
-        each factor, using the next factor as a tie-breaker if needed.
-      </p>
-      <p>Selected statistics:</p>
-      <ol>
-        {factors.map(factor => (
-          <li key={factor.key}>
-            {factors.length > 1 && (
-              <button
-                onClick={() =>
-                  setFactors(factors.filter(f => f.key !== factor.key))
-                }
-              >
-                -
-              </button>
-            )}
-            {DATA_SOURCES.find(source => source.key === factor.key).name} (
-            {factor.order === ASCENDING
-              ? "in ascending order"
-              : "in descending order"}
-            )
-          </li>
-        ))}
-      </ol>
-      <p>Available statistics:</p>
-      <ul>
-        {sortBy(
-          Object.entries(groupBy(DATA_SOURCES, source => source.category)),
-          ([category]) => CATEGORIES.indexOf(category)
-        ).map(([category, sources]) => (
-          <li key={category}>
-            <strong>{category}</strong> <br />
-            <ol>
-              {sources.map(source => (
-                <li key={source.key}>
-                  <button
-                    disabled={
-                      !!factors.find(factor => factor.key === source.key)
-                    }
-                    onClick={() =>
-                      setFactors([
-                        ...factors,
-                        { key: source.key, order: source.defaultOrder }
-                      ])
-                    }
-                  >
-                    +
-                  </button>
-                  {source.name}
-                  {source.description && `: ${source.description}`}
-                </li>
-              ))}
-            </ol>
-          </li>
-        ))}
-      </ul>
-
-      <SimpleSortRankedTeams teams={rankedTeams} stats={stats} />
     </>
   );
 }
