@@ -269,8 +269,24 @@ const MASCOT_WEIGHTS = new FetchDataSource({
   }
 });
 
+const TALENT = new FetchDataSource({
+  name: "Talent",
+  key: "talent",
+  description: "Team talent composite",
+  href: "talent/current.json",
+  process(data, teams) {
+    const values = fromPairs(teams.map(team => [team, data[team]]));
+    const ranks = Object.values(values);
+    return mapValues(values, value => ({
+      value,
+      rank: ranks.indexOf(value) + 1
+    }));
+  }
+});
+
 export const DATA_SOURCES = [
   RANDOM,
   MASCOT_WEIGHTS,
+  TALENT,
   ...NCAA_STATS.map(opts => new NCAAStatDataSource(opts))
 ];

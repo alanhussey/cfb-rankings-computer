@@ -1,0 +1,5 @@
+{
+  "job": "collegefootballdata",
+  "url": "/talent?year=2019",
+  "output_path": "talent/2019.json"
+}

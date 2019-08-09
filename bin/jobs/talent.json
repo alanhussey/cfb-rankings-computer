@@ -1,0 +1,5 @@
+{
+  "job": "current-talent",
+  "output_path": "talent/current.json",
+  "dependencies": ["talent-2018", "talent-2019"]
+}
