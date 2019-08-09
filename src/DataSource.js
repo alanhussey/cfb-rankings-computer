@@ -27,7 +27,8 @@ class DataSource {
     category = CATEGORY_OTHER,
     defaultOrder = "desc",
     initialState = null,
-    render = String
+    render = String,
+    process = null
   }) {
     Object.assign(this, {
       name,
@@ -38,11 +39,12 @@ class DataSource {
       initialState,
       render
     });
+    if (process) {
+      this.process = process;
+    }
   }
-  fetch() {
-    return Promise.reject(
-      new TypeError(`${this.constructor} does not implement \`fetch\``)
-    );
+  async fetch() {
+    throw new TypeError(`${this.constructor.name} must implement \`fetch\``);
   }
   process(data) {
     return data;
@@ -50,8 +52,8 @@ class DataSource {
 }
 
 class GeneratedDataSource extends DataSource {
-  fetch() {
-    return Promise.resolve();
+  async fetch() {
+    return null;
   }
 }
 
@@ -59,9 +61,6 @@ class FetchDataSource extends DataSource {
   constructor(options) {
     super(options);
     this.href = `/data/${options.href}`;
-    if (options.process) {
-      this.process = options.process;
-    }
   }
   async fetch() {
     return await (await fetch(this.href)).json();
@@ -229,7 +228,8 @@ const RANDOM = new GeneratedDataSource({
   process(data, teams) {
     const values = fromPairs(teams.map(team => [team, Math.random()]));
     const ranks = Object.values(values).sort();
-    return mapValues(data, (_, key) => ({
+
+    return mapValues(values, (_, key) => ({
       value: values[key],
       rank: ranks.indexOf(values[key]) + 1
     }));

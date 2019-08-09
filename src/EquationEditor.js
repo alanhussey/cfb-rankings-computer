@@ -8,6 +8,10 @@ const DEFAULT_SCORING_FN = team =>
   ((team.totalOffense - team.totalDefense) / team.totalOffense) *
   team.winningPercentage;
 
+const render = !!(window.Intl && Intl.NumberFormat)
+  ? new Intl.NumberFormat().format
+  : value => value.toFixed(3);
+
 export default function EquationEditor({
   factors,
   setFactors,
@@ -15,10 +19,10 @@ export default function EquationEditor({
 }) {
   useEffect(() => {
     setFactors(
-      [
-        ...DATA_SOURCES.filter(source => source.name.startsWith("Total ")),
-        ...DATA_SOURCES.filter(source => source.name.startsWith("Winning "))
-      ].map(source => ({ key: source.key, order: source.defaultOrder }))
+      DATA_SOURCES.filter(
+        source =>
+          source.name.startsWith("Total ") || source.name.startsWith("Winning ")
+      ).map(source => ({ key: source.key, order: source.defaultOrder }))
     );
   }, [setFactors]);
 
@@ -29,9 +33,7 @@ export default function EquationEditor({
       order: DESCENDING
     }
   ]);
-  const render = !!(window.Intl && Intl.NumberFormat)
-    ? new Intl.NumberFormat().format
-    : value => value.toFixed(3);
+
   return (
     <>
       <p>Selected statistics:</p>
