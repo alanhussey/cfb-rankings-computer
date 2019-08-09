@@ -276,7 +276,7 @@ const TALENT = new FetchDataSource({
   href: "talent/current.json",
   process(data, teams) {
     const values = fromPairs(teams.map(team => [team, data[team]]));
-    const ranks = Object.values(values);
+    const ranks = Object.values(values).sort();
     return mapValues(values, value => ({
       value,
       rank: ranks.indexOf(value) + 1
