@@ -252,10 +252,21 @@ const MASCOT_WEIGHTS = new FetchDataSource({
       rank: ranks.indexOf(value) + 1
     }));
   },
-  render:
-    window.Intl && Intl.NumberFormat
-      ? value => new Intl.NumberFormat().format(value)
-      : value => value
+  render(value) {
+    switch (value) {
+      case Infinity:
+      case -Infinity:
+        return "Unknowable";
+
+      case 0:
+        return "?";
+
+      default:
+        return window.Intl && Intl.NumberFormat
+          ? new Intl.NumberFormat().format(value)
+          : String(value);
+    }
+  }
 });
 
 export const DATA_SOURCES = [

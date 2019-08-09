@@ -40,7 +40,7 @@ WEIGHTS=$(
   "Charlotte": 137,
   "Cincinnati": 48,
   "Clemson": 436.5,
-  "Coastal Carolina": 0,
+  "Coastal Carolina": null,
   "Colorado": 1300,
   "Colorado State": 270,
   "Connecticut": 47,
