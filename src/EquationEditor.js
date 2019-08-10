@@ -132,7 +132,7 @@ export default function EquationEditor({
         <tbody>
           {teams.map(({ team, rank, score, ...teamStats }) => (
             <Rank key={team.school} team={team} rank={rank}>
-              <td>{render(score)}</td>
+              <td title={score}>{render(score)}</td>
             </Rank>
           ))}
         </tbody>
