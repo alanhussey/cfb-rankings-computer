@@ -245,6 +245,10 @@ const NCAA_STATS = [
   }
 ];
 
+const quantize = (num, decimals) => {
+  return Math.round(num * (1 / decimals)) / (1 / decimals);
+};
+
 const RANDOM = new GeneratedDataSource({
   name: "Random",
   key: "random",
@@ -252,7 +256,9 @@ const RANDOM = new GeneratedDataSource({
     "Each team is given a random score, randomized on every page refresh",
 
   process(data, teams) {
-    const values = fromPairs(teams.map(team => [team, Math.random()]));
+    const values = fromPairs(
+      teams.map(team => [team, quantize(Math.random(), 0.0001)])
+    );
     const ranks = Object.values(values).sort();
 
     return mapValues(values, (_, key) => ({
