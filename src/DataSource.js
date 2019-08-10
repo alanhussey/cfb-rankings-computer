@@ -4,6 +4,7 @@ import mapKeys from "lodash/mapKeys";
 import camelCase from "lodash/camelCase";
 import fromPairs from "lodash/fromPairs";
 import getCorrectTeamName from "./getCorrectTeamName";
+import { ASCENDING, DESCENDING } from "./constants";
 
 const CATEGORY_OFFENSE = "Offense";
 const CATEGORY_DEFENSE = "Defense";
@@ -19,6 +20,24 @@ export const CATEGORIES = [
   CATEGORY_OTHER
 ];
 
+const assertNonNull = (name, value) => {
+  if (value == null) {
+    throw new TypeError(`A null-ish value was provided for ${name}`);
+  }
+};
+
+const assertEnum = (name, value, allowable) => {
+  if (!allowable.includes(value)) {
+    throw new TypeError(`${name} must be one of ${JSON.stringify(allowable)}`);
+  }
+};
+
+const assertCallable = (name, fn) => {
+  if (typeof fn !== "function") {
+    throw new TypeError(`${name} must be a function`);
+  }
+};
+
 class DataSource {
   constructor({
     name,
@@ -30,6 +49,12 @@ class DataSource {
     render = String,
     process = null
   }) {
+    assertNonNull("name", name);
+    assertNonNull("key", key);
+    assertNonNull("description", description);
+    assertEnum("category", category, CATEGORIES);
+    assertEnum("defaultOrder", defaultOrder, [ASCENDING, DESCENDING]);
+    assertCallable("render", render);
     Object.assign(this, {
       name,
       key,
@@ -40,6 +65,7 @@ class DataSource {
       render
     });
     if (process) {
+      assertCallable("process", process);
       this.process = process;
     }
   }
@@ -290,3 +316,9 @@ export const DATA_SOURCES = [
   TALENT,
   ...NCAA_STATS.map(opts => new NCAAStatDataSource(opts))
 ];
+
+DATA_SOURCES.forEach((source, index) => {
+  if (DATA_SOURCES.findIndex(s => s.key === source.key) !== index) {
+    throw new Error(`${source.key} is used twice`);
+  }
+});
