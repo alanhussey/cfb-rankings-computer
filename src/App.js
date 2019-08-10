@@ -1,5 +1,6 @@
 import fromPairs from "lodash/fromPairs";
 import isEmpty from "lodash/isEmpty";
+import uniqBy from "lodash/uniqBy";
 import React, { useState, useEffect, useMemo } from "react";
 
 import { FBS_TEAMS, DATA_SOURCES } from "./DataSource";
@@ -23,10 +24,11 @@ function App() {
 
   // Selected data points for sorting
   const [factors, setFactors] = useState([]);
+  const addFactors = f => setFactors(uniqBy([...factors, ...f], "key"));
 
   // Available data points
   const [dataSources, setDataSources] = useState(
-    fromPairs(DATA_SOURCES.map(source => [source.key, source.initialState]))
+    fromPairs(DATA_SOURCES.map(source => [source.key, null]))
   );
   useEffect(() => {
     async function fetchSources() {
@@ -94,6 +96,7 @@ function App() {
       <SystemComp
         factors={factors}
         setFactors={setFactors}
+        addFactors={addFactors}
         teams={teamsWithFactors}
       />
     </>
