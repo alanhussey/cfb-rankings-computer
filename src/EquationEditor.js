@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useMemo } from "react";
 import debounce from "lodash/debounce";
 import fromPairs from "lodash/fromPairs";
-import unzip from "lodash/unzip";
 import difference from "lodash/difference";
+import { create, all } from "mathjs/number";
+
 import { DATA_SOURCES } from "./DataSource";
 import Rank from "./Rank";
 import rankBy from "./rankBy";
 import { DESCENDING } from "./constants";
+
+const math = create(all);
 
 // Pre-defined set of built-ins
 const DEFAULT_CONTEXT = {
@@ -14,15 +17,9 @@ const DEFAULT_CONTEXT = {
 };
 
 function makeScoringFn(expression) {
-  return team => {
-    const [args, values] = unzip(
-      Object.entries({ ...DEFAULT_CONTEXT, ...team })
-    );
-
-    // eslint-disable-next-line no-new-func
-    const fn = new Function(...args, `return (${expression})`);
-    return fn(...values);
-  };
+  const node = math.parse(expression);
+  const code = node.compile();
+  return team => code.evaluate(team);
 }
 
 const render = !!(window.Intl && Intl.NumberFormat)

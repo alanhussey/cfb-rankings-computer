@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "lodash": "^4.17.15",
+    "mathjs": "^6.0.4",
     "mkdirp": "^0.5.1",
     "ncaa-stats": "^2.0.0",
     "react": "^16.8.6",
