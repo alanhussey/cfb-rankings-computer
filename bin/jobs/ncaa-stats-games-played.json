@@ -1,0 +1,5 @@
+{
+  "job": "games-played",
+  "output_path": "ncaa-stats/games-played.json",
+  "dependencies": ["ncaa-stats-wins", "ncaa-stats-losses", "ncaa-stats-ties"]
+}

@@ -1,0 +1,7 @@
+{
+  "category": "Winning Percentage",
+  "stat_key": "W",
+  "output_path": "ncaa-stats/wins.json",
+  "job": "ncaa-stat",
+  "dependencies": ["ncaa-stats-categories"]
+}

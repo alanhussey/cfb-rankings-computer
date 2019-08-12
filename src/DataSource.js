@@ -105,7 +105,8 @@ function getRender(dataType) {
 
 class NCAAStatDataSource extends FetchDataSource {
   constructor(options) {
-    const slug = options.name.toLowerCase().replace(/[^a-z0-9]/g, "-");
+    const slug =
+      options.slug || options.name.toLowerCase().replace(/[^a-z0-9]/g, "-");
 
     super({
       ...options,
@@ -242,7 +243,21 @@ const NCAA_STATS = [
     name: "Winning Percentage",
     category: CATEGORY_OVERALL,
     dataType: "percent"
-  }
+  },
+  { name: "Wins", category: CATEGORY_OVERALL, slug: "wins" },
+  {
+    name: "Losses",
+    category: CATEGORY_OVERALL,
+    slug: "losses",
+    defaultOrder: "asc"
+  },
+  {
+    name: "Ties",
+    category: CATEGORY_OVERALL,
+    slug: "ties",
+    defaultOrder: "asc"
+  },
+  { name: "Games Played", category: CATEGORY_OVERALL, slug: "games-played" }
 ];
 
 const quantize = (num, decimals) => {
