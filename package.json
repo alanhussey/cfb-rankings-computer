@@ -7,9 +7,11 @@
     "mathjs": "^6.0.4",
     "mkdirp": "^0.5.1",
     "ncaa-stats": "^2.0.0",
+    "prismjs": "^1.17.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "react-simple-code-editor": "^0.9.14"
   },
   "scripts": {
     "start": "react-scripts start",
