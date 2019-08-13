@@ -16,7 +16,6 @@ const RANKING_SYSTEMS = [
 
 const TAGLINE = sample([
   "Bring Your Own Bias",
-  "Bring your own bias",
   "Computers ain't played nobody, PAAAWWWWLLLLLL!",
   "Shut up, nerd",
   "I bet you can't make a ranking worse than the CFP",
