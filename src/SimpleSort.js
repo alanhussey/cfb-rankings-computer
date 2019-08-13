@@ -1,14 +1,72 @@
 import sortBy from "lodash/sortBy";
 import groupBy from "lodash/groupBy";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { DATA_SOURCES, CATEGORIES } from "./DataSource";
 import SimpleSortRankedTeams from "./SimpleSortRankedTeams";
 import rankBy from "./rankBy";
 import { ASCENDING, DESCENDING } from "./constants";
 
+function AvailableDataSources({ factors, addFactors }) {
+  const [search, setSearch] = useState("");
+  const searchRe = new RegExp(search, "ig");
+  return (
+    <>
+      <p>Available statistics:</p>
+      <input
+        type="search"
+        placeholder="Search"
+        value={search}
+        onChange={event => setSearch(event.target.value)}
+      />
+      <ul>
+        {sortBy(
+          Object.entries(groupBy(DATA_SOURCES, source => source.category)),
+          ([category]) => CATEGORIES.indexOf(category)
+        ).map(([category, sources]) => (
+          <li key={category}>
+            <strong>{category}</strong> <br />
+            <ol>
+              {sources
+                .filter(
+                  source =>
+                    search.trim() === "" ||
+                    searchRe.test(source.name) ||
+                    searchRe.test(source.key) ||
+                    searchRe.test(source.description)
+                )
+                .map(source => (
+                  <li key={source.key}>
+                    <button
+                      disabled={
+                        !!factors.find(factor => factor.key === source.key)
+                      }
+                      onClick={() =>
+                        addFactors([
+                          {
+                            key: source.key,
+                            order: source.defaultOrder
+                          }
+                        ])
+                      }
+                    >
+                      +
+                    </button>
+                    {source.name}
+                    {source.description && `: ${source.description}`}
+                  </li>
+                ))}
+            </ol>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
 export default function SimpleSort({
   factors,
   setFactors,
+  addFactors,
   teams: teamsWithFactors
 }) {
   useEffect(() => {
@@ -56,38 +114,11 @@ export default function SimpleSort({
           </li>
         ))}
       </ol>
-      <p>Available statistics:</p>
-      <ul>
-        {sortBy(
-          Object.entries(groupBy(DATA_SOURCES, source => source.category)),
-          ([category]) => CATEGORIES.indexOf(category)
-        ).map(([category, sources]) => (
-          <li key={category}>
-            <strong>{category}</strong> <br />
-            <ol>
-              {sources.map(source => (
-                <li key={source.key}>
-                  <button
-                    disabled={
-                      !!factors.find(factor => factor.key === source.key)
-                    }
-                    onClick={() =>
-                      setFactors([
-                        ...factors,
-                        { key: source.key, order: source.defaultOrder }
-                      ])
-                    }
-                  >
-                    +
-                  </button>
-                  {source.name}
-                  {source.description && `: ${source.description}`}
-                </li>
-              ))}
-            </ol>
-          </li>
-        ))}
-      </ul>
+      <AvailableDataSources
+        factors={factors}
+        addFactors={addFactors}
+        setFactors={setFactors}
+      />
 
       <SimpleSortRankedTeams teams={rankedTeams} stats={stats} />
     </>

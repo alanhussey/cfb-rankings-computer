@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "classnames": "^2.2.6",
     "lodash": "^4.17.15",
     "mathjs": "^6.0.4",
     "mkdirp": "^0.5.1",

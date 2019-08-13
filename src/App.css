@@ -1,55 +1,101 @@
 .App {
 }
 
+:root {
+  --theme-primary: hsl(208, 100%, 15%);
+  --theme-secondary: hsl(351, 73%, 37%);
+  --theme-shadow: hsl(230, 15%, 16%);
+  --theme-black: hsl(180, 100%, 0%);
+  --theme-white: hsl(192, 100%, 99%);
+  --theme-grey: hsl(0, 0%, 95%);
+
+  --font-family-text: Georgia, serif;
+  --font-family-numeric: sans-serif;
+  --font-family-display: sans-serif;
+}
+
+html,
+body {
+  background-color: var(--theme-white);
+  color: var(--theme-black);
+}
+
+h1 {
+  color: var(--theme-crimson);
+}
+
+p,
+ul,
+ol {
+  font-family: var(--font-family-text);
+}
+
+/* - - - - - - - */
+
 .App-ranks {
-  margin: 0;
+  width: calc(100% - 2em);
+  margin: 0 1em;
   padding: 0;
+  border-collapse: collapse;
 }
 
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
+.App-ranks tr {
+  background-color: var(--theme-white);
+}
+.App-ranks thead tr > * {
+  border-bottom: 5px solid var(--theme-shadow);
+  vertical-align: bottom;
+}
+.App-ranks tr > * {
+  margin: 0;
 }
 
-.container__content {
-  width: 440px;
-  max-width: 100%;
-  padding: 10px;
-  text-align: center;
+.App-ranks tbody tr > * {
+  vertical-align: baseline;
+}
+.App-ranks tbody tr img {
+  vertical-align: bottom;
+  width: 28px;
+  padding: 0 5px;
+  position: relative;
+  bottom: -3px;
+}
+.App-ranks tr:nth-child(even) {
+  background-color: var(--theme-grey);
+}
+.App-ranks td,
+.App-ranks th {
+  margin: 0;
+  padding: 0.25em 0.5em 0.75em 0;
+}
+.App-ranks td:nth-child(1),
+.App-ranks th:nth-child(1) {
+  width: 40px;
+}
+.App-ranks th {
+  text-align: left;
+}
+.App-ranks td {
+  text-align: right;
+  font-family: var(--font-family-numeric);
+}
+.App-ranks td:nth-child(1) {
+  font-weight: bold;
+  font-family: var(--font-family-display);
+}
+.App-ranks td:nth-child(2) {
+  text-align: left;
+  font-family: var(--font-family-text);
 }
 
-.container_editor_area {
-  tab-size: 4ch;
-  max-height: 400px;
-  overflow: auto;
-  margin: 1.67em 0;
+.Stat--most-significant {
+  font-weight: bold;
+}
+.Stat--insignificant {
+  color: var(--theme-shadow);
 }
 
-.container__editor {
-  font-size: 12px;
-  font-variant-ligatures: common-ligatures;
-  background-color: #fafafa;
-  border-radius: 3px;
-}
-
-.container__editor textarea {
-  outline: 0;
-}
-
-.button {
-  display: inline-block;
-  padding: 0 6px;
-  text-decoration: none;
-  background: #000;
-  color: #fff;
-}
-
-.button:hover {
-  background: linear-gradient(45deg, #e42b66, #e2433f);
-}
+/* - - - - - - - */
 
 /* Syntax highlighting */
 .token.comment,

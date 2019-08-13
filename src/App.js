@@ -67,7 +67,7 @@ function App() {
     }));
   }, [teams, dataSources, factors]);
 
-  const [system, setSystem] = useState("equation");
+  const [system, setSystem] = useState("simple-sort");
 
   const SystemComp =
     {

@@ -77,7 +77,7 @@ const isSubset = (subset, superset) =>
 export default function EquationEditor({ factors, addFactors, teams }) {
   const [equation, setEquation] = useState(INITIAL_EQUATION);
 
-  // All the references in the equation that are valid data sources
+  // All the references in the equation that are valid sources
   const desiredSources = useMemo(() => {
     // All named references in the equation
     const variables = [...new Set(equation.match(/[A-z]+/g))];
@@ -138,7 +138,7 @@ export default function EquationEditor({ factors, addFactors, teams }) {
       <ol>
         {factors.map(factor => (
           <li key={factor.key}>
-            {DATA_SOURCES.find(source => source.key === factor.key).name}(
+            {DATA_SOURCES.find(source => source.key === factor.key).name} (
             <code style={{ fontFamily: CODE_FONT_FAMILY }}>{factor.key}</code>)
           </li>
         ))}

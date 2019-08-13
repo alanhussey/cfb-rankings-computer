@@ -1,4 +1,5 @@
 import React from "react";
+import classnames from "classnames";
 import Rank from "./Rank";
 
 export default function SimpleSortRankedTeams({ teams, stats }) {
@@ -31,22 +32,18 @@ export default function SimpleSortRankedTeams({ teams, stats }) {
                 if (isTieBreaker) {
                   needsATiebreaker = false;
                 }
+                const isMostSignificantStat =
+                  ((teamIndex === 0 || !needsATiebreaker) && statIndex === 0) ||
+                  isTieBreaker;
+                const isInsignificant =
+                  statIndex === 0 || isTieBreaker || needsATiebreaker;
                 return (
                   <td
                     key={key}
-                    align="right"
-                    style={{
-                      fontWeight:
-                        ((teamIndex === 0 || !needsATiebreaker) &&
-                          statIndex === 0) ||
-                        isTieBreaker
-                          ? "bold"
-                          : "normal",
-                      color:
-                        statIndex === 0 || isTieBreaker || needsATiebreaker
-                          ? "black"
-                          : "grey"
-                    }}
+                    className={classnames({
+                      "Stat--most-significant": isMostSignificantStat,
+                      "Stat--insignificant": isInsignificant
+                    })}
                   >
                     {render(stat)}
                   </td>
