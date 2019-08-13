@@ -150,18 +150,5 @@ WEIGHTS=$(
 EOF
 )
 
-count_fbs_teams="$(
-    jq 'length' "$fbs_teams_path"
-)"
-
-count_mascots="$(
-    echo "$WEIGHTS" | jq 'to_entries | length'
-)"
-
-if [[ "$count_fbs_teams" -ne "$count_mascots" ]]; then
-    echo "Expected $count_fbs_teams mascot weights but got $count_mascots"
-    exit 1
-fi
-
 echo "output_path $output_path"
 echo "$WEIGHTS" | jq . >"$output_path"
