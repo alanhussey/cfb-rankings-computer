@@ -1,9 +1,11 @@
 {
   "name": "cfb-ranking-builder",
+  "homepage": "https://rankings.computer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "classnames": "^2.2.6",
+    "gh-pages": "^2.1.1",
     "lodash": "^4.17.15",
     "mathjs": "^6.0.4",
     "mkdirp": "^0.5.1",
@@ -16,8 +18,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "rm -r public/data && cp -r data public/data",
+    "jobs": "./bin/run-jobs.sh",
+    "prebuild": "npm run jobs && rm -r public/data && cp -r data public/data",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
