@@ -1,40 +1,110 @@
-.App {
-}
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:700");
+@import url("https://fonts.googleapis.com/css?family=Source+Serif+Pro:400");
 
 :root {
-  --theme-primary: hsl(208, 100%, 15%);
-  --theme-secondary: hsl(351, 73%, 37%);
+  --theme-primary: hsl(351, 73%, 37%);
+  --theme-secondary: hsl(208, 100%, 15%);
   --theme-shadow: hsl(230, 15%, 16%);
   --theme-black: hsl(180, 100%, 0%);
   --theme-white: hsl(192, 100%, 99%);
   --theme-grey: hsl(0, 0%, 95%);
 
-  --font-family-text: Georgia, serif;
+  --font-family-text: "Source Serif Pro", Georgia, serif;
   --font-family-numeric: sans-serif;
-  --font-family-display: sans-serif;
+  --font-family-code: "Fira code", "Fira Mono", Inconsolata, Menlo, monospace;
+  --font-family-display: "Source Sans Pro", sans-serif;
+  --font-weight-display: 700;
 }
 
 html,
 body {
   background-color: var(--theme-white);
   color: var(--theme-black);
+  font-weight: 400;
+  line-height: 1.45;
+  font-size: 16px;
 }
 
-h1 {
-  color: var(--theme-crimson);
+header,
+main,
+footer {
+  padding: 1em;
+}
+
+header {
+  background: var(--theme-shadow);
+}
+
+header h1 {
+  font-family: var(--font-family-code);
+  color: var(--theme-white);
+  margin-bottom: 0;
+  margin-right: 100vw;
+  display: inline-block;
+  padding-right: 0.25em;
+  border-right: 10px solid var(--theme-white);
+  animation: cursor-blink 1s steps(5, start) infinite;
+}
+@keyframes cursor-blink {
+  to {
+    border-color: transparent;
+  }
+}
+header h1 + small {
+  color: var(--theme-white);
+  font-size: 1em;
+  font-weight: var(--font-weight-display);
 }
 
 p,
 ul,
 ol {
   font-family: var(--font-family-text);
+  margin-bottom: 1.25em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: var(--theme-primary);
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-display);
+  line-height: 1.15;
+  margin: 2.75rem 0 1rem;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2.5em;
+}
+
+h3 {
+  font-size: 2em;
+}
+
+h4 {
+  font-size: 1.5em;
+}
+
+h5 {
+  font-size: 1.25em;
+}
+
+small {
+  font-size: 0.8em;
 }
 
 /* - - - - - - - */
 
 .App-ranks {
-  width: calc(100% - 2em);
-  margin: 0 1em;
+  width: 100%;
+  margin: 0;
   padding: 0;
   border-collapse: collapse;
 }
@@ -55,11 +125,16 @@ ol {
 }
 
 .App-ranks thead tr > * {
-  border-bottom: 5px solid var(--theme-shadow);
+  color: var(--theme-secondary);
+  border-bottom: 5px solid var(--theme-primary);
   vertical-align: bottom;
 }
 .App-ranks tr > * {
   margin: 0;
+}
+/* Rank column */
+.App-ranks th:first-child {
+  width: 40px;
 }
 
 .App-ranks tbody tr > * {
@@ -75,14 +150,13 @@ ol {
 .App-ranks tr:nth-child(even) {
   background-color: var(--theme-grey);
 }
-.App-ranks td,
 .App-ranks th {
   margin: 0;
-  padding: 0.25em 0.5em 0.75em 0;
+  padding: 0.75em 0 0.25em 0.5em;
 }
-.App-ranks td:nth-child(1),
-.App-ranks th:nth-child(1) {
-  width: 40px;
+.App-ranks td {
+  margin: 0;
+  padding: 0.25em 0.5em 0.5em 0.5em;
 }
 .App-ranks th {
   text-align: left;

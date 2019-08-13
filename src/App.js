@@ -1,6 +1,7 @@
 import fromPairs from "lodash/fromPairs";
 import isEmpty from "lodash/isEmpty";
 import uniqBy from "lodash/uniqBy";
+import sample from "lodash/sample";
 import React, { useState, useEffect, useMemo } from "react";
 
 import { FBS_TEAMS, DATA_SOURCES } from "./DataSource";
@@ -12,6 +13,16 @@ const RANKING_SYSTEMS = [
   { id: "simple-sort", name: "Simple sort" },
   { id: "equation", name: "Score" }
 ];
+
+const TAGLINE = sample([
+  "Bring Your Own Bias",
+  "Bring your own bias",
+  "Computers ain't played nobody, PAAAWWWWLLLLLL!",
+  "Shut up, nerd",
+  "I bet you can't make a ranking worse than the CFP",
+  "Finally, a ranking worse than the CFP",
+  "Proving once and for all that computers hate your team"
+]);
 
 function App() {
   // All FBS teams
@@ -77,28 +88,34 @@ function App() {
 
   return (
     <>
-      <h1>Build-a-ranking</h1>
-      <label>
-        Choose your ranking system:
-        <select
-          value={system}
-          onChange={event => setSystem(event.target.value)}
-        >
-          {RANKING_SYSTEMS.map(({ id, name }) => (
-            <option key={id} value={id}>
-              {name}
-            </option>
-          ))}
-        </select>
-      </label>
+      <header>
+        <h1>rankings.computer</h1>
+        <small>{TAGLINE}</small>
+      </header>
+      <main>
+        <label>
+          Choose your ranking system:
+          <select
+            value={system}
+            onChange={event => setSystem(event.target.value)}
+          >
+            {RANKING_SYSTEMS.map(({ id, name }) => (
+              <option key={id} value={id}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </label>
 
-      <h2>{RANKING_SYSTEMS.find(({ id }) => id === system).name}</h2>
-      <SystemComp
-        factors={factors}
-        setFactors={setFactors}
-        addFactors={addFactors}
-        teams={teamsWithFactors}
-      />
+        <h2>{RANKING_SYSTEMS.find(({ id }) => id === system).name}</h2>
+        <SystemComp
+          factors={factors}
+          setFactors={setFactors}
+          addFactors={addFactors}
+          teams={teamsWithFactors}
+        />
+      </main>
+      <footer />
     </>
   );
 }
