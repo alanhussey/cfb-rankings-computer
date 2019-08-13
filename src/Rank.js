@@ -14,7 +14,7 @@ export default function Rank({ team, rank, children }) {
       <td>
         <img src={logos[0]} alt="" loading="lazy" />
         {school}{" "}
-        <span style={{ color: darkestColor, fontStyle: "italic" }}>
+        <span className="Rank-mascot-name" style={{ color: darkestColor }}>
           {mascot}
         </span>
       </td>

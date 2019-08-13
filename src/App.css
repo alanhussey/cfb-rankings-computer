@@ -100,6 +100,10 @@ ol {
   font-family: var(--font-family-text);
 }
 
+.Rank-mascot-name {
+  font-style: italic;
+}
+
 .Stat--most-significant {
   font-weight: bold;
 }
