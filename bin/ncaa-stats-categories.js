@@ -100,6 +100,6 @@ async function main(config) {
 
 if (require.main === module) {
   const [configPath] = process.argv.slice(2);
-  const config = require(path.join(process.cwd(), configPath));
+  const config = require(path.resolve(configPath));
   main(config);
 }
