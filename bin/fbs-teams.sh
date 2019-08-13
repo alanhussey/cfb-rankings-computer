@@ -20,8 +20,8 @@ count_fbs_teams="$(
         "$all_teams_path"
 )"
 
-if [[ "$count_fbs_teams" -ne "128" ]]; then
-    echo "Expected 128 FBS teams but got $count_fbs_teams"
+if [[ "$count_fbs_teams" -ne "130" ]]; then
+    echo "Expected 130 FBS teams but got $count_fbs_teams"
     exit 1
 fi
 
