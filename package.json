@@ -19,7 +19,7 @@
   "scripts": {
     "start": "react-scripts start",
     "jobs": "./bin/run-jobs.sh",
-    "prebuild": "npm run jobs && rm -r public/data && cp -r data public/data",
+    "prebuild": "npm run jobs && rm -rf public/data && cp -r data public/data",
     "build": "react-scripts build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
