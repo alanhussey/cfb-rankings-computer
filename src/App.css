@@ -42,6 +42,18 @@ ol {
 .App-ranks tr {
   background-color: var(--theme-white);
 }
+
+.App-rank-toggle {
+  border: 0;
+  background: transparent;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
 .App-ranks thead tr > * {
   border-bottom: 5px solid var(--theme-shadow);
   vertical-align: bottom;

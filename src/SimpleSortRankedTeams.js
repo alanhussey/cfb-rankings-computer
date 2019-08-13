@@ -1,16 +1,35 @@
 import React from "react";
 import classnames from "classnames";
 import Rank from "./Rank";
+import { ASCENDING, DESCENDING } from "./constants";
 
-export default function SimpleSortRankedTeams({ teams, stats }) {
+export default function SimpleSortRankedTeams({
+  teams,
+  stats,
+  toggleStatOrder
+}) {
   return (
     <table className="App-ranks">
       <thead>
         <tr>
           <th>Rank</th>
           <th>Team</th>
-          {stats.map(({ key, name }) => (
-            <th key={key}>{name}</th>
+          {stats.map(({ key, name, order }) => (
+            <th key={key}>
+              <button
+                className="App-rank-toggle"
+                type="button"
+                onClick={() => toggleStatOrder(key)}
+              >
+                {name}{" "}
+                {
+                  {
+                    [ASCENDING]: "▲",
+                    [DESCENDING]: "▼"
+                  }[order]
+                }
+              </button>
+            </th>
           ))}
         </tr>
       </thead>

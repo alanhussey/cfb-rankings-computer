@@ -1,6 +1,6 @@
 import sortBy from "lodash/sortBy";
 import groupBy from "lodash/groupBy";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { DATA_SOURCES, CATEGORIES } from "./DataSource";
 import SimpleSortRankedTeams from "./SimpleSortRankedTeams";
 import rankBy from "./rankBy";
@@ -76,6 +76,21 @@ export default function SimpleSort({
     ]);
   }, [setFactors]);
 
+  const toggleStatOrder = useCallback(
+    key =>
+      setFactors(
+        factors.map(factor =>
+          factor.key === key
+            ? {
+                ...factor,
+                order: factor.order === ASCENDING ? DESCENDING : ASCENDING
+              }
+            : factor
+        )
+      ),
+    [factors, setFactors]
+  );
+
   // Teams ranked by the selected factors
   const rankedTeams = rankBy(teamsWithFactors, factors);
   const stats = factors.map(factor => {
@@ -83,6 +98,7 @@ export default function SimpleSort({
     return {
       key: factor.key,
       name: source.name,
+      order: factor.order,
       render: value => source.render(value)
     };
   });
@@ -120,7 +136,11 @@ export default function SimpleSort({
         setFactors={setFactors}
       />
 
-      <SimpleSortRankedTeams teams={rankedTeams} stats={stats} />
+      <SimpleSortRankedTeams
+        teams={rankedTeams}
+        stats={stats}
+        toggleStatOrder={toggleStatOrder}
+      />
     </>
   );
 }
