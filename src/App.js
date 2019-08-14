@@ -2,6 +2,7 @@ import fromPairs from "lodash/fromPairs";
 import isEmpty from "lodash/isEmpty";
 import uniqBy from "lodash/uniqBy";
 import sample from "lodash/sample";
+import get from "lodash/get";
 import React, { useState, useEffect, useMemo } from "react";
 
 import { FBS_TEAMS, DATA_SOURCES } from "./DataSource";
@@ -71,7 +72,7 @@ function App() {
       ...fromPairs(
         factors.map(factor => [
           factor.key,
-          dataSources[factor.key][team.school].value
+          get(dataSources, [factor.key, team.school, "value"], null)
         ])
       )
     }));
