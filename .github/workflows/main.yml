@@ -1,6 +1,9 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+    - master
 
 jobs:
   build:
@@ -11,5 +14,10 @@ jobs:
     - uses: actions/checkout@master
     - name: npm install
       run: npm install
-    - name: Build and deploy
-      run: npm run deploy
+    - name: build
+      run: npm run build
+    - uses: peaceiris/actions-gh-pages@v1.1.0
+      env:
+      - PUBLISH_DIR: ./build
+      - PUBLISH_BRANCH: gh-pages
+      secrets: ["GITHUB_TOKEN"]
