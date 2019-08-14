@@ -18,6 +18,6 @@ jobs:
       run: npm run build
     - uses: peaceiris/actions-gh-pages@v1.1.0
       env:
-      - PUBLISH_DIR: ./build
-      - PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: ./build
+        PUBLISH_BRANCH: gh-pages
       secrets: ["GITHUB_TOKEN"]
