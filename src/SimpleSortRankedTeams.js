@@ -1,6 +1,7 @@
 import React from "react";
 import classnames from "classnames";
 import Rank from "./Rank";
+import get from "lodash/get";
 import { ASCENDING, DESCENDING } from "./constants";
 
 export default function SimpleSortRankedTeams({
@@ -21,7 +22,7 @@ export default function SimpleSortRankedTeams({
                 type="button"
                 onClick={() => toggleStatOrder(key)}
               >
-                {name}{" "}
+                {name}&nbsp;
                 {
                   {
                     [ASCENDING]: "▲",
@@ -37,9 +38,11 @@ export default function SimpleSortRankedTeams({
         {teams.map(({ team, rank, score, ...teamStats }, teamIndex) => {
           const previousTeam = teamIndex !== 0 && teams[teamIndex - 1];
 
-          const firstStat = stats[0].key;
+          const firstStat = get(stats, [0, "key"]);
           let needsATiebreaker =
-            !!previousTeam && teamStats[firstStat] === previousTeam[firstStat];
+            !!firstStat &&
+            !!previousTeam &&
+            teamStats[firstStat] === previousTeam[firstStat];
 
           return (
             <Rank key={team.school} team={team} rank={rank}>

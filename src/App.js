@@ -3,6 +3,7 @@ import isEmpty from "lodash/isEmpty";
 import uniqBy from "lodash/uniqBy";
 import sample from "lodash/sample";
 import get from "lodash/get";
+import keyBy from "lodash/keyBy";
 import React, { useState, useEffect, useMemo } from "react";
 
 import { FBS_TEAMS, DATA_SOURCES } from "./DataSource";
@@ -11,9 +12,10 @@ import EquationEditor from "./EquationEditor";
 import "./App.css";
 
 const RANKING_SYSTEMS = [
-  { id: "simple-sort", name: "Simple sort" },
-  { id: "equation", name: "Score" }
+  { id: "simple-sort", name: "Simple sort", Component: SimpleSort },
+  { id: "equation", name: "Score", Component: EquationEditor }
 ];
+const RANKING_SYSTEMS_BY_ID = keyBy(RANKING_SYSTEMS, "id");
 
 const TAGLINE = sample([
   "Bring Your Own Bias",
@@ -78,13 +80,13 @@ function App() {
     }));
   }, [teams, dataSources, factors]);
 
-  const [system, setSystem] = useState("simple-sort");
+  const [rankingSystem, setRankingSystem] = useState("");
 
-  const SystemComp =
-    {
-      "simple-sort": SimpleSort,
-      equation: EquationEditor
-    }[system] || (() => <h2>Uh oh</h2>);
+  const SystemComp = get(
+    RANKING_SYSTEMS_BY_ID,
+    [rankingSystem, "Component"],
+    () => null
+  );
 
   return (
     <>
@@ -93,21 +95,22 @@ function App() {
         <small>{TAGLINE}</small>
       </header>
       <main>
-        <label>
-          Choose your ranking system:
-          <select
-            value={system}
-            onChange={event => setSystem(event.target.value)}
-          >
-            {RANKING_SYSTEMS.map(({ id, name }) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))}
-          </select>
-        </label>
+        <h2>Build your own computer ranking</h2>
+        <label>Choose your ranking system:</label>
 
-        <h2>{RANKING_SYSTEMS.find(({ id }) => id === system).name}</h2>
+        {RANKING_SYSTEMS.map(({ id, name }) => (
+          <label className="Select Select--ranking-system">
+            <input
+              key={id}
+              onChange={event => setRankingSystem(event.target.value)}
+              type="radio"
+              value={id}
+              checked={id === rankingSystem}
+            />
+            {name}
+          </label>
+        ))}
+
         <SystemComp
           factors={factors}
           setFactors={setFactors}
