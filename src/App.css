@@ -102,6 +102,42 @@ small {
 
 /* - - - - - - - */
 
+.Select {
+  display: inline-block;
+  width: 10em;
+  margin: 0.5em;
+  padding: 0.25em;
+  border-radius: 0.25em;
+  font-weight: bold;
+  color: var(--theme-shadow);
+  background: var(--theme-grey);
+  border: 3px solid transparent;
+}
+.Select:first-of-type {
+  margin-left: 0;
+}
+.Select:last-of-type {
+  margin-right: 0;
+}
+
+.Select:hover,
+.Select:active {
+  border-color: var(--theme-secondary);
+}
+
+.Select--selected {
+  color: var(--theme-white);
+  background: var(--theme-secondary);
+}
+.Select input {
+  margin: 1em;
+}
+
+.Select--ranking-system {
+}
+
+/* - - - - - - - */
+
 .App-ranks {
   width: 100%;
   margin: 0;
@@ -142,8 +178,8 @@ small {
 }
 .App-ranks tbody tr img {
   vertical-align: bottom;
-  width: 28px;
-  padding: 0 5px;
+  width: 32px;
+  padding: 0 10px 0 5px;
   position: relative;
   bottom: -3px;
 }

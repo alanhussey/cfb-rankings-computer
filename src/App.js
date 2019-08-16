@@ -5,15 +5,19 @@ import sample from "lodash/sample";
 import get from "lodash/get";
 import keyBy from "lodash/keyBy";
 import React, { useState, useEffect, useMemo } from "react";
+import classnames from "classnames";
 
 import { FBS_TEAMS, DATA_SOURCES } from "./DataSource";
 import SimpleSort from "./SimpleSort";
 import EquationEditor from "./EquationEditor";
 import "./App.css";
 
+const EloPlaceholder = () => <p>Coming soon.</p>;
+
 const RANKING_SYSTEMS = [
   { id: "simple-sort", name: "Simple sort", Component: SimpleSort },
-  { id: "equation", name: "Score", Component: EquationEditor }
+  { id: "equation", name: "Score", Component: EquationEditor },
+  { id: "elo", name: "Elo", Component: EloPlaceholder }
 ];
 const RANKING_SYSTEMS_BY_ID = keyBy(RANKING_SYSTEMS, "id");
 
@@ -98,18 +102,24 @@ function App() {
         <h2>Build your own computer ranking</h2>
         <label>Choose your ranking system:</label>
 
-        {RANKING_SYSTEMS.map(({ id, name }) => (
-          <label className="Select Select--ranking-system">
-            <input
-              key={id}
-              onChange={event => setRankingSystem(event.target.value)}
-              type="radio"
-              value={id}
-              checked={id === rankingSystem}
-            />
-            {name}
-          </label>
-        ))}
+        <div>
+          {RANKING_SYSTEMS.map(({ id, name }) => (
+            <label
+              className={classnames("Select Select--ranking-system", {
+                "Select--selected": id === rankingSystem
+              })}
+            >
+              <input
+                key={id}
+                onChange={event => setRankingSystem(event.target.value)}
+                type="radio"
+                value={id}
+                checked={id === rankingSystem}
+              />
+              {name}
+            </label>
+          ))}
+        </div>
 
         <SystemComp
           factors={factors}
