@@ -39,10 +39,9 @@ header h1 {
   font-family: var(--font-family-code);
   color: var(--theme-white);
   margin-bottom: 0;
-  margin-right: 100vw;
   display: inline-block;
   padding-right: 0.25em;
-  border-right: 10px solid var(--theme-white);
+  border-right: 5px solid var(--theme-white);
   animation: cursor-blink 1s steps(5, start) infinite;
 }
 @keyframes cursor-blink {
@@ -52,8 +51,14 @@ header h1 {
 }
 header h1 + small {
   color: var(--theme-white);
+  display: block;
   font-size: 1em;
   font-weight: var(--font-weight-display);
+  padding-left: 2px;
+}
+
+main > h2:first-of-type {
+  margin-top: 0;
 }
 
 p,
