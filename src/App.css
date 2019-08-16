@@ -104,8 +104,8 @@ small {
 
 .Select {
   display: inline-block;
-  width: 10em;
-  margin: 0.5em;
+  width: calc(100% - 1em);
+  margin: 0.5em 1em 0.5em 0;
   padding: 0.25em;
   border-radius: 0.25em;
   font-weight: bold;
@@ -113,11 +113,10 @@ small {
   background: var(--theme-grey);
   border: 3px solid transparent;
 }
-.Select:first-of-type {
-  margin-left: 0;
-}
-.Select:last-of-type {
-  margin-right: 0;
+@media (min-width: 412px) {
+  .Select {
+    width: 10em;
+  }
 }
 
 .Select:hover,
