@@ -18,10 +18,14 @@ jobs:
       run: npm install
     - name: build
       run: npm run build
+    - name: debug before deploy
+      run: tree -h
     - name: deploy
       uses: peaceiris/actions-gh-pages@v1.1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PUBLISH_DIR: build
         PUBLISH_BRANCH: gh-pages
+    - name: debug after deploy
+      run: tree -h
 
