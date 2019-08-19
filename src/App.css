@@ -14,6 +14,31 @@
   --font-family-code: "Fira code", "Fira Mono", Inconsolata, Menlo, monospace;
   --font-family-display: "Source Sans Pro", sans-serif;
   --font-weight-display: 700;
+
+  --font-size-a: 1.5em;
+  --font-size-b: 1.25em;
+  --font-size-c: 0.8em;
+  --font-size-d: 0.8em;
+}
+
+@media (min-width: 412px) {
+  :root {
+    --font-size-a: 2em;
+    --font-size-b: 1.5em;
+    --font-size-c: 1.25em;
+    --font-size-d: 0.8em;
+  }
+}
+
+@media (min-width: 545px) {
+  :root {
+    --font-size-a: 3em;
+    --font-size-b: 2.5em;
+    --font-size-c: 2em;
+    --font-size-d: 1.5em;
+    --font-size-e: 1.25em;
+    --font-size-f: 0.8em;
+  }
 }
 
 html,
@@ -31,6 +56,15 @@ footer {
   padding: 1em;
 }
 
+@media (min-width: 545px) {
+  header,
+  main,
+  footer {
+    /* 570px == width of 3 Select inputs */
+    padding: 1em calc((100vw - 570px) / 2);
+  }
+}
+
 header {
   background: var(--theme-shadow);
 }
@@ -38,7 +72,7 @@ header {
 header h1 {
   font-family: var(--font-family-code);
   color: var(--theme-white);
-  margin-bottom: 0;
+  margin: 0;
   display: inline-block;
   padding-right: 0.25em;
   border-right: 5px solid var(--theme-white);
@@ -55,10 +89,6 @@ header h1 + small {
   font-size: 1em;
   font-weight: var(--font-weight-display);
   padding-left: 2px;
-}
-
-main > h2:first-of-type {
-  margin-top: 0;
 }
 
 p,
@@ -81,28 +111,23 @@ h5 {
 }
 
 h1 {
-  margin-top: 0;
-  font-size: 3em;
+  font-size: var(--font-size-a);
 }
 
 h2 {
-  font-size: 2.5em;
+  margin-top: 0;
+  font-size: var(--font-size-b);
 }
 
 h3 {
-  font-size: 2em;
+  font-size: var(--font-size-c);
 }
 
-h4 {
-  font-size: 1.5em;
-}
-
-h5 {
-  font-size: 1.25em;
-}
-
+h4,
+h5,
+h6,
 small {
-  font-size: 0.8em;
+  font-size: var(--font-size-d);
 }
 
 /* - - - - - - - */
@@ -142,14 +167,29 @@ small {
 
 /* - - - - - - - */
 
-.App-ranks {
+.Ranks {
+}
+
+@media (min-width: 545px) {
+  .Ranks {
+    padding: 1em;
+  }
+}
+@media (min-width: 570px) {
+  .Ranks.Ranks--full-width {
+    width: calc(100vw - 2em);
+    margin-left: calc((-100vw + 570px - 0em) / 2);
+  }
+}
+
+.Ranks--table {
   width: 100%;
   margin: 0;
   padding: 0;
   border-collapse: collapse;
 }
 
-.App-ranks tr {
+.Ranks--table tr {
   background-color: var(--theme-white);
 }
 
@@ -164,52 +204,56 @@ small {
   cursor: pointer;
 }
 
-.App-ranks thead tr > * {
+.Ranks--table thead tr > * {
   color: var(--theme-secondary);
   border-bottom: 5px solid var(--theme-primary);
   vertical-align: bottom;
 }
-.App-ranks tr > * {
+.Ranks--table tr > * {
   margin: 0;
 }
 /* Rank column */
-.App-ranks th:first-child {
+.Ranks--table th:first-child {
   width: 40px;
 }
 
-.App-ranks tbody tr > * {
+.Ranks--table tbody tr > * {
   vertical-align: baseline;
 }
-.App-ranks tbody tr img {
+.Ranks--table tbody tr img {
   vertical-align: bottom;
   width: 32px;
   padding: 0 10px 0 5px;
   position: relative;
   bottom: -3px;
 }
-.App-ranks tr:nth-child(even) {
+.Ranks--table tr:nth-child(even) {
   background-color: var(--theme-grey);
 }
-.App-ranks th {
+.Ranks--table th {
   margin: 0;
   padding: 0.75em 0 0.25em 0.5em;
 }
-.App-ranks td {
+.Ranks--table td {
   margin: 0;
   padding: 0.25em 0.5em 0.5em 0.5em;
 }
-.App-ranks th {
+.Ranks--table th {
+  text-align: right;
+}
+.Ranks--table th:nth-child(1),
+.Ranks--table th:nth-child(2) {
   text-align: left;
 }
-.App-ranks td {
+.Ranks--table td {
   text-align: right;
   font-family: var(--font-family-numeric);
 }
-.App-ranks td:nth-child(1) {
+.Ranks--table td:nth-child(1) {
   font-weight: bold;
   font-family: var(--font-family-display);
 }
-.App-ranks td:nth-child(2) {
+.Ranks--table td:nth-child(2) {
   text-align: left;
   font-family: var(--font-family-text);
 }

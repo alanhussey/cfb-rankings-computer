@@ -106,6 +106,7 @@ function App() {
         <div>
           {RANKING_SYSTEMS.map(({ id, name }) => (
             <label
+              key={id}
               className={classnames("Select Select--ranking-system", {
                 "Select--selected": id === rankingSystem
               })}

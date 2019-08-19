@@ -7,8 +7,8 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 
 import { DATA_SOURCES } from "./DataSource";
-import Rank from "./Rank";
 import rankBy from "./rankBy";
+import Ranks from "./Ranks";
 import { DESCENDING } from "./constants";
 
 const math = create(all);
@@ -52,22 +52,13 @@ const render = !!(window.Intl && Intl.NumberFormat)
 
 function EquationEditorRankedTeams({ teams }) {
   return (
-    <table className="App-ranks">
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Team</th>
-          <th>Score</th>
-        </tr>
-      </thead>
-      <tbody>
-        {teams.map(({ team, rank, score, ...teamStats }) => (
-          <Rank key={team.school} team={team} rank={rank}>
-            <td title={String(score[0])}>{render(score)}</td>
-          </Rank>
-        ))}
-      </tbody>
-    </table>
+    <Ranks
+      headers={<th>Score</th>}
+      teams={teams.map(({ score, ...rest }) => ({
+        ...rest,
+        columns: <td title={String(score[0])}>{render(score)}</td>
+      }))}
+    />
   );
 }
 
