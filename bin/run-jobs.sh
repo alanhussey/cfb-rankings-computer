@@ -9,6 +9,7 @@ SCRIPTDIR="$(
     pwd -P
 )"
 DATADIR="$SCRIPTDIR/../data"
+mkdir -p "$DATADIR"
 JOBSDIR="$SCRIPTDIR/jobs"
 
 get_config() {
@@ -64,7 +65,12 @@ while [ "$jobs_remaining" -ne 0 ]; do
             fi
         fi
 
-        "$SCRIPTDIR/run-job.sh" "$job_path"
+        (
+            export SCRIPTDIR="$SCRIPTDIR"
+            export DATADIR="$DATADIR"
+            export JOBSDIR="$JOBSDIR"
+            "$SCRIPTDIR/run-job.sh" "$job_path"
+        )
         jobs_remaining=$(bc <<<"$jobs_remaining - 1")
     done
 done

@@ -2,17 +2,11 @@
 
 set -e
 
-SCRIPTDIR="$(
-    cd "$(dirname "$0")"
-    pwd -P
-)"
-DATADIR="$SCRIPTDIR/../data"
-
 get_config() {
     jq ".$2" "$1" --raw-output
 }
 
-all_teams_path="$DATADIR/$(get_config "$SCRIPTDIR/jobs/all-teams.json" output_path)"
+all_teams_path="$DATADIR/$(get_config "$JOBSDIR/all-teams.json" output_path)"
 fbs_teams_path="$DATADIR/$(get_config "$1" output_path)"
 
 count_fbs_teams="$(

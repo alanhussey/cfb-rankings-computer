@@ -2,18 +2,11 @@
 
 set -e
 
-SCRIPTDIR="$(
-    cd "$(dirname "$0")"
-    pwd -P
-)"
-DATADIR="$SCRIPTDIR/../data"
-
 get_config() {
     jq ".$2" "$1" --raw-output
 }
 
 output_path="$DATADIR/$(get_config "$1" output_path)"
-fbs_teams_path="$DATADIR/$(get_config "$SCRIPTDIR/jobs/fbs-teams.json" output_path)"
 
 WEIGHTS=$(
     cat <<EOF
@@ -152,5 +145,4 @@ WEIGHTS=$(
 EOF
 )
 
-echo "output_path $output_path"
 echo "$WEIGHTS" | jq . >"$output_path"

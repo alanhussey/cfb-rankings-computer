@@ -2,12 +2,6 @@
 
 set -e
 
-SCRIPTDIR="$(
-    cd "$(dirname "$0")"
-    pwd -P
-)"
-DATADIR="$SCRIPTDIR/../data"
-
 get_config() {
     jq ".$2" "$1" --raw-output
 }
@@ -17,10 +11,10 @@ get_output_path() {
 }
 
 output_path="$(get_output_path "$1")"
-fbs_teams_path="$(get_output_path "$SCRIPTDIR/jobs/fbs-teams.json")"
+fbs_teams_path="$(get_output_path "$JOBSDIR/fbs-teams.json")"
 wins_losses_ties_paths="$(
     for job in $(get_config "$1" dependencies | jq '.[]' --raw-output); do
-        get_output_path "$SCRIPTDIR/jobs/$job.json"
+        get_output_path "$JOBSDIR/$job.json"
     done
 )"
 
