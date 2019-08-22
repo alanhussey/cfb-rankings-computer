@@ -9,7 +9,7 @@ get_config() {
 
 job=$(get_config job)
 
-echo "Running $job $(basename "${config_path%.*}")"
+echo "- Running $job $(basename "${config_path%.*}")"
 
 if [ -f "$SCRIPTDIR/$job.sh" ]; then
     "$SCRIPTDIR/$job.sh" "$@"

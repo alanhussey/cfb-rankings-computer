@@ -82,6 +82,8 @@ for season in $(seq 2018 "$CURRENT_SEASON"); do
             jobs_remaining=$(bc <<<"$jobs_remaining - 1")
         done
     done
+
+    echo
 done
 
 echo "jobs done"
