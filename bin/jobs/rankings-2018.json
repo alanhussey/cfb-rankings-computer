@@ -1,5 +1,0 @@
-{
-  "job": "collegefootballdata",
-  "url": "/rankings?year=2018",
-  "output_path": "rankings/2018.json"
-}

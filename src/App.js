@@ -1,9 +1,9 @@
 import fromPairs from "lodash/fromPairs";
-import isEmpty from "lodash/isEmpty";
 import uniqBy from "lodash/uniqBy";
 import sample from "lodash/sample";
 import get from "lodash/get";
 import keyBy from "lodash/keyBy";
+import range from "lodash/range";
 import React, { useState, useEffect, useMemo } from "react";
 import classnames from "classnames";
 
@@ -31,14 +31,34 @@ const TAGLINE = sample([
   "Proving once and for all that computers hate your team"
 ]);
 
+function getQueryParams() {
+  return Object.fromEntries(
+    document.location.search
+      .replace(/^\?/, "")
+      .split("&")
+      .map(kv => kv.split("="))
+  );
+}
+const getQueryParam = param => getQueryParams()[param];
+
+const FIRST_SEASON = 2018;
+const CURRENT_SEASON =
+  // Last year if we're currently in the first half of this year
+  new Date().getFullYear() + (new Date().getMonth() < 7 ? -1 : 0);
+const SEASONS = range(FIRST_SEASON, CURRENT_SEASON + 1);
+
 function App() {
+  const [season, setSeason] = useState(
+    getQueryParam("season") || new Date().getFullYear().toString()
+  );
+
   // All FBS teams
   const [teams, setTeams] = useState(null);
   useEffect(() => {
-    FBS_TEAMS.fetch()
+    FBS_TEAMS.fetch({ season })
       .then(data => FBS_TEAMS.process(data))
       .then(data => setTeams(data));
-  }, []);
+  }, [season]);
 
   // Selected data points for sorting
   const [factors, setFactors] = useState([]);
@@ -53,25 +73,26 @@ function App() {
       const teamNames = Object.keys(teams);
       const selectedSources = factors.map(factor => factor.key);
 
+      const desiredDataSources = DATA_SOURCES.filter(source =>
+        selectedSources.includes(source.key)
+      );
       const fetchedSources = await Promise.all(
-        DATA_SOURCES.filter(source => selectedSources.includes(source.key)).map(
-          async source => {
-            const data = await source.fetch();
-            return [source.key, source.process(data, teamNames)];
-          }
-        )
+        desiredDataSources.map(async source => {
+          const data = await source.fetch({ season });
+          return [source.key, source.process(data, teamNames)];
+        })
       );
 
       setDataSources(fromPairs(fetchedSources));
     }
 
     if (teams != null) fetchSources();
-  }, [factors, teams]);
+  }, [factors, season, teams]);
 
   // Teams with data points mixed in
   const teamsWithFactors = useMemo(() => {
     // Early-out if we don't have all the data we need yet
-    if (!teams || factors.some(factor => isEmpty(dataSources[factor.key])))
+    if (!teams || factors.some(factor => dataSources[factor.key] == null))
       return [];
 
     return Object.values(teams).map(team => ({
@@ -79,7 +100,11 @@ function App() {
       ...fromPairs(
         factors.map(factor => [
           factor.key,
-          get(dataSources, [factor.key, team.school, "value"], null)
+          get(
+            dataSources,
+            [factor.key, "forTeam", team.school, "value"],
+            dataSources[factor.key].defaultValue
+          )
         ])
       )
     }));
@@ -100,6 +125,20 @@ function App() {
         <small>{TAGLINE}</small>
       </header>
       <main>
+        <label style={{ float: "right" }}>
+          Season{" "}
+          <select
+            value={season}
+            onChange={event => setSeason(Number(event.target.value))}
+          >
+            {[...SEASONS].reverse().map(year => (
+              <option key={year} value={year}>
+                {year}-{year + 1}
+              </option>
+            ))}
+          </select>
+        </label>
+
         <h2>Build your own computer ranking</h2>
         <label>Choose your ranking system:</label>
 

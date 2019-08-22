@@ -4,7 +4,7 @@ set -e
 
 config_path=$1
 get_config() {
-    jq ".$1" "$config_path" --raw-output
+    jq ".[\"$1\"]" "$config_path" --raw-output
 }
 
 category="$(get_config category)"
@@ -20,9 +20,4 @@ else
     jq_pipeline="map({key: .Team, value: .[\"$stat_key\"] | gsub(\",\"; \"\") | tonumber}) | from_entries"
 fi
 
-"$SCRIPTDIR/download-ncaa-stat.js" "$category" | jq "$jq_pipeline" >"$output_path"
-
-if [ ! "$(wc -c <"$output_path" | xargs)" -ge 10 ]; then
-    echo "No output generated for $output_path"
-    exit 1
-fi
+"$SCRIPTDIR/download-ncaa-stat.js" "$category" "$SEASON" | jq "$jq_pipeline" >"$output_path"

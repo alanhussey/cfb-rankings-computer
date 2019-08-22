@@ -87,7 +87,7 @@ async function main(config) {
     process.exit(1);
   }
 
-  const outputPath = path.join(__dirname, "../data", config.output_path);
+  const outputPath = path.join(process.env.DATADIR, config.output_path);
 
   mkdirp.sync(path.dirname(outputPath));
 

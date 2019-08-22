@@ -168,6 +168,8 @@ small {
 /* - - - - - - - */
 
 .Ranks {
+  max-width: 100vw;
+  overflow: scroll;
 }
 
 @media (min-width: 545px) {

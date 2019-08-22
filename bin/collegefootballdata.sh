@@ -13,7 +13,7 @@ output_path=$(get_config output_path)
 mkdir -p "$(dirname "$DATADIR/$output_path")"
 
 curl \
-    -X GET "https://api.collegefootballdata.com$url" \
+    -X GET "https://api.collegefootballdata.com$url?year=$SEASON" \
     -H "accept: application/json" \
     -o "$DATADIR/$output_path" \
     2>/dev/null

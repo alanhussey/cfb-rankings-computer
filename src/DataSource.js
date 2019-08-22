@@ -45,7 +45,7 @@ class DataSource {
     description = "",
     category = CATEGORY_OTHER,
     defaultOrder = "desc",
-    initialState = null,
+    defaultValue = 0,
     render = String,
     process = null
   }) {
@@ -54,6 +54,7 @@ class DataSource {
     assertNonNull("description", description);
     assertEnum("category", category, CATEGORIES);
     assertEnum("defaultOrder", defaultOrder, [ASCENDING, DESCENDING]);
+    assertNonNull("defaultValue", defaultValue);
     assertCallable("render", render);
     Object.assign(this, {
       name,
@@ -61,7 +62,7 @@ class DataSource {
       description,
       category,
       defaultOrder,
-      initialState,
+      defaultValue,
       render
     });
     if (process) {
@@ -86,10 +87,26 @@ class GeneratedDataSource extends DataSource {
 class FetchDataSource extends DataSource {
   constructor(options) {
     super(options);
-    this.href = `/data/${options.href}`;
+    this.relativePath = options.relativePath;
   }
-  async fetch() {
-    return await (await fetch(this.href)).json();
+  getURL({ season }) {
+    return `/data/${season}/${this.relativePath}`;
+  }
+  async fetch(options) {
+    const url = this.getURL(options);
+    const response = await fetch(url);
+    if (response.ok) {
+      try {
+        const txt = await response.text();
+        return JSON.parse(txt);
+      } catch (error) {
+        console.error(error, url);
+        return {};
+      }
+    } else {
+      console.error(response.statusText, url);
+      return {};
+    }
   }
 }
 
@@ -111,38 +128,32 @@ class NCAAStatDataSource extends FetchDataSource {
     super({
       ...options,
       key: camelCase(slug),
-      href: `ncaa-stats/${slug}.json`,
+      relativePath: `ncaa-stats/${slug}.json`,
       render: getRender(options.dataType)
     });
   }
-  process(data) {
-    const values = data;
-    const ranks = sortBy(Object.values(values));
-    return mapValues(
-      mapKeys(values, (value, team) => getCorrectTeamName(team)),
-      value => ({
-        value,
-        rank: ranks.indexOf(value)
-      })
-    );
+  process(data, teams) {
+    const ranks = sortBy(Object.values(data));
+
+    return {
+      defaultValue: this.defaultValue,
+      forTeam: mapValues(
+        mapKeys(data, (value, team) => getCorrectTeamName(team)),
+        value => ({
+          value,
+          rank: ranks.indexOf(value)
+        })
+      )
+    };
   }
 }
 
 export const FBS_TEAMS = new FetchDataSource({
   name: "All FBS teams",
   key: "fbsTeams",
-  href: "fbs-teams.json",
-  initialState: {}
+  relativePath: "fbs-teams.json",
+  defaultValue: {}
 });
-
-/*
-const CURRENT_RANKINGS = new FetchDataSource({
-  name: "Most recent polls",
-  key: "currentRankings",
-  href: "rankings/current.json",
-  initialState: { polls: [] }
-});
-*/
 
 const NCAA_STATS = [
   { name: "3rd Down Conversion Pct", category: CATEGORY_OFFENSE },
@@ -258,7 +269,7 @@ const NCAA_STATS = [
     defaultOrder: "asc"
   },
   { name: "Games Played", category: CATEGORY_OVERALL, slug: "games-played" }
-];
+].map(opts => new NCAAStatDataSource(opts));
 
 const quantize = (num, decimals) => {
   return Math.round(num * (1 / decimals)) / (1 / decimals);
@@ -276,10 +287,13 @@ const RANDOM = new GeneratedDataSource({
     );
     const ranks = Object.values(values).sort();
 
-    return mapValues(values, (_, key) => ({
-      value: values[key],
-      rank: ranks.indexOf(values[key]) + 1
-    }));
+    return {
+      defaultValue: this.defaultValue,
+      forTeam: mapValues(values, (_, key) => ({
+        value: values[key],
+        rank: ranks.indexOf(values[key]) + 1
+      }))
+    };
   }
 });
 
@@ -288,16 +302,19 @@ const MASCOT_WEIGHTS = new FetchDataSource({
   key: "mascotWeight",
   description:
     "Per Jon Bois and SBNation https://www.youtube.com/watch?v=obtRtrk42a8",
-  href: "mascot-weights.json",
-  initialState: {},
+  relativePath: "mascot-weights.json",
+  defaultValue: 0,
   process(data) {
     // parse `"Infinity"`
     const weights = mapValues(data, Number);
     const ranks = sortBy(Object.values(weights), n => -n);
-    return mapValues(weights, value => ({
-      value,
-      rank: ranks.indexOf(value) + 1
-    }));
+    return {
+      defaultValue: this.defaultValue,
+      forTeam: mapValues(weights, value => ({
+        value,
+        rank: ranks.indexOf(value) + 1
+      }))
+    };
   },
   render(value) {
     switch (value) {
@@ -320,23 +337,21 @@ const TALENT = new FetchDataSource({
   name: "Talent",
   key: "talent",
   description: "Team talent composite",
-  href: "talent/current.json",
+  relativePath: "talent.json",
   process(data, teams) {
     const values = fromPairs(teams.map(team => [team, data[team]]));
     const ranks = Object.values(values).sort();
-    return mapValues(values, value => ({
-      value,
-      rank: ranks.indexOf(value) + 1
-    }));
+    return {
+      defaultValue: this.defaultValue,
+      forTeam: mapValues(values, value => ({
+        value,
+        rank: ranks.indexOf(value) + 1
+      }))
+    };
   }
 });
 
-export const DATA_SOURCES = [
-  RANDOM,
-  MASCOT_WEIGHTS,
-  TALENT,
-  ...NCAA_STATS.map(opts => new NCAAStatDataSource(opts))
-];
+export const DATA_SOURCES = [RANDOM, MASCOT_WEIGHTS, TALENT, ...NCAA_STATS];
 
 DATA_SOURCES.forEach((source, index) => {
   if (DATA_SOURCES.findIndex(s => s.key === source.key) !== index) {
