@@ -112,6 +112,8 @@ class FetchDataSource extends DataSource {
 
 function getRender(dataType) {
   switch (dataType) {
+    case "time":
+      return value => `${Math.trunc(value)}:${Math.round((value % 1) * 60)}`;
     case "percent":
       return value => `${(value * 100).toFixed(2)}%`;
 
@@ -244,7 +246,7 @@ const NCAA_STATS = [
   },
   { name: "Team Sacks", category: CATEGORY_DEFENSE },
   { name: "Team Tackles for Loss", category: CATEGORY_DEFENSE },
-  { name: "Time of Possession", category: CATEGORY_OFFENSE },
+  { name: "Time of Possession", category: CATEGORY_OFFENSE, dataType: "time" },
   { name: "Total Defense", category: CATEGORY_DEFENSE, defaultOrder: "asc" },
   { name: "Total Offense", category: CATEGORY_OFFENSE },
   { name: "Turnover Margin", category: CATEGORY_OVERALL },

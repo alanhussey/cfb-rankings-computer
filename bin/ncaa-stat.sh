@@ -15,7 +15,8 @@ mkdir -p "$(dirname "$output_path")"
 
 # TODO don't hard-code this stat_key, do parse time-of-possession somehow
 if [[ "$stat_key" == "AvgTOP" ]]; then
-    jq_pipeline="map({key: .Team, value: .[\"$stat_key\"]}) | from_entries"
+    time_to_number='(. / ":") | map(tonumber) | .[0] + (.[1] / 60)'
+    jq_pipeline="map({key: .Team, value: (.[\"$stat_key\"] | $time_to_number)}) | from_entries"
 else
     jq_pipeline="map({key: .Team, value: .[\"$stat_key\"] | gsub(\",\"; \"\") | tonumber}) | from_entries"
 fi
