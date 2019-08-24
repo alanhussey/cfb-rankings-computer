@@ -1,8 +1,9 @@
 import React from "react";
 import classnames from "classnames";
-import Ranks from "./Ranks";
 import get from "lodash/get";
-import { ASCENDING, DESCENDING } from "./constants";
+import Ranks from "./Ranks";
+import { ORDER_ARROW } from "./constants";
+import Button from "./Button";
 
 export default function SimpleSortRankedTeams({
   teams,
@@ -13,19 +14,9 @@ export default function SimpleSortRankedTeams({
     <Ranks
       headers={stats.map(({ key, name, order }) => (
         <th key={key}>
-          <button
-            className="App-rank-toggle"
-            type="button"
-            onClick={() => toggleStatOrder(key)}
-          >
-            {name}&nbsp;
-            {
-              {
-                [ASCENDING]: "▲",
-                [DESCENDING]: "▼"
-              }[order]
-            }
-          </button>
+          <Button onClick={() => toggleStatOrder(key)}>
+            {name}&nbsp;{ORDER_ARROW[order]}
+          </Button>
         </th>
       ))}
       teams={teams.map(({ team, rank, score, ...teamStats }, teamIndex) => {

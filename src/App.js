@@ -110,7 +110,9 @@ function App() {
     }));
   }, [teams, dataSources, factors]);
 
-  const [rankingSystem, setRankingSystem] = useState("");
+  const [rankingSystem, setRankingSystem] = useState(
+    getQueryParam("system") || ""
+  );
 
   const SystemComp = get(
     RANKING_SYSTEMS_BY_ID,
