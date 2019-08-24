@@ -1,5 +1,6 @@
 {
-  "job": "fbs-teams",
+  "job": "collegefootballdata",
+  "url": "/teams/fbs",
   "output_path": "fbs-teams.json",
   "dependencies": ["all-teams"]
 }
