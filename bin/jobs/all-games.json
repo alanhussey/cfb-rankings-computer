@@ -1,0 +1,5 @@
+{
+  "job": "collegefootballdata",
+  "url": "/games",
+  "output_path": "all-games.json"
+}

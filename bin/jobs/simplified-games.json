@@ -1,0 +1,6 @@
+{
+  "job": "jq-pipeline",
+  "dependencies": ["all-games"],
+  "pipeline": ".[0] | map(with_entries(select([.key] | inside([\"id\", \"home_points\", \"home_team\", \"away_points\", \"away_team\"])))) | map(.winner = (if .home_points > .away_points then \"home_team\" else (if .home_points < .away_points then \"away_team\" else null end) end))",
+  "output_path": "simplified-games.json"
+}

@@ -1,0 +1,6 @@
+{
+  "job": "jq-pipeline",
+  "dependencies": ["simplified-games"],
+  "pipeline": ".[0] | map(select(.home_points != null))",
+  "output_path": "completed-games.json"
+}
