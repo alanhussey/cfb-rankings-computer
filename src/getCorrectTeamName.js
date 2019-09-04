@@ -1,5 +1,5 @@
 // Remap team names from those reported by stats.ncaa.org to those reported by collegefootballdata.com
-export default team =>
+module.exports = team =>
   ({
     "Army West Point": "Army",
     "Coastal Caro.": "Coastal Carolina",

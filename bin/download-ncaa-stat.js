@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const ncaa = require("ncaa-stats");
 const path = require("path");
+const getCorrectTeamName = require("../src/getCorrectTeamName");
 
 // Because `console.log` also goes to stdout
 console.log = console.error;
@@ -41,6 +42,11 @@ async function main({ category, season }) {
       );
       process.exit(1);
     }
+
+    teams = teams.map(row => ({
+      ...row,
+      Team: getCorrectTeamName(row.Team)
+    }));
   }
 
   process.stdout.write(JSON.stringify(teams, null, 2), error => {

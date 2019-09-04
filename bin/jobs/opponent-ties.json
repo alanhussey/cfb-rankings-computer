@@ -1,0 +1,6 @@
+{
+  "job": "jq-pipeline",
+  "dependencies": ["played-teams", "ncaa-stats-ties"],
+  "pipeline": ". as [$opponents, $ties] | $opponents | with_entries(.value = (.value | map($ties[.]) | add // 0))",
+  "output_path": "opponent-ties.json"
+}

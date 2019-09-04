@@ -1,0 +1,6 @@
+{
+  "job": "jq-pipeline",
+  "dependencies": ["fbs-teams", "completed-games"],
+  "pipeline": ". as [$teams, $games] | reduce $teams[] as $team ({}; . + {($team.school): ($games | map(select(.home_team == $team.school or .away_team == $team.school)))})",
+  "output_path": "completed-games-by-team.json"
+}

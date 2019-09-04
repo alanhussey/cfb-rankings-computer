@@ -1,0 +1,6 @@
+{
+  "job": "jq-pipeline",
+  "dependencies": ["completed-games-by-team"],
+  "pipeline": ".[0] | with_entries(.key as $team | .value = (.value | map(if .home_team == $team then .away_team else .home_team end)))",
+  "output_path": "played-teams.json"
+}
