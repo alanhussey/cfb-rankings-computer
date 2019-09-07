@@ -36,9 +36,7 @@ const Factor = ({
       <span className="Factor--name">{name}</span>&nbsp;
       <OrderToggle
         className="Factor--order-indicator"
-        title={`By default, this will be sorted in ${
-          ORDER_LABEL[order]
-        } order. You can change this later.`}
+        title={`By default, this will be sorted in ${ORDER_LABEL[order]} order. You can change this later.`}
         onClick={onClickOrderToggle}
       >
         {ORDER_ARROW[order]}
@@ -183,8 +181,9 @@ function AvailableDataSources({ factors, addFactors }) {
                         buttonContent={
                           <span
                             title={
-                              disabled &&
-                              "You cannot use the same stat more than once to sort teams. That doesn't even make sense."
+                              disabled
+                                ? "You cannot use the same stat more than once to sort teams. That doesn't even make sense."
+                                : undefined
                             }
                             role="img"
                             aria-label="add"

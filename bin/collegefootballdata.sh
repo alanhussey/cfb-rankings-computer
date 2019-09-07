@@ -17,3 +17,11 @@ curl \
     -H "accept: application/json" \
     -o "$DATADIR/$output_path" \
     2>/dev/null
+
+postprocess="$(get_config postprocess)"
+
+if [ "$postprocess" != "null" ]; then
+    mv "$DATADIR/$output_path" "$DATADIR/$output_path.tmp"
+    jq "$postprocess" "$DATADIR/$output_path.tmp" >"$DATADIR/$output_path"
+    rm "$DATADIR/$output_path.tmp"
+fi

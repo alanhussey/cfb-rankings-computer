@@ -1,5 +1,6 @@
 {
   "job": "collegefootballdata",
   "url": "/teams/fbs",
+  "postprocess": "map({key: .school, value: .}) | from_entries",
   "output_path": "fbs-teams.json"
 }

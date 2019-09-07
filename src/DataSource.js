@@ -353,7 +353,32 @@ const TALENT = new FetchDataSource({
   }
 });
 
-export const DATA_SOURCES = [RANDOM, MASCOT_WEIGHTS, TALENT, ...NCAA_STATS];
+const STRENGTH_OF_SCHEDULE = new FetchDataSource({
+  name: "Strength of schedule",
+  key: "sos",
+  description: "Combined record of all opponents",
+  relativePath: "strength-of-schedule.json",
+  process(data, teams) {
+    const values = fromPairs(teams.map(team => [team, data[team]]));
+    const ranks = Object.values(values).sort();
+    debugger;
+    return {
+      defaultValue: this.defaultValue,
+      forTeam: mapValues(values, value => ({
+        value,
+        rank: ranks.indexOf(value) + 1
+      }))
+    };
+  }
+});
+
+export const DATA_SOURCES = [
+  RANDOM,
+  MASCOT_WEIGHTS,
+  TALENT,
+  STRENGTH_OF_SCHEDULE,
+  ...NCAA_STATS
+];
 
 DATA_SOURCES.forEach((source, index) => {
   if (DATA_SOURCES.findIndex(s => s.key === source.key) !== index) {
