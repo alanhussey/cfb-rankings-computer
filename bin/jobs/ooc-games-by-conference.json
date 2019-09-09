@@ -1,0 +1,6 @@
+{
+  "job": "jq-pipeline",
+  "dependencies": ["conferences", "all-games"],
+  "pipeline": ". as [$conferences, $games] | $conferences | reduce $conferences[] as $conf ({}; . + {($conf): ($games | map(select((.home_conference == $conf or .away_conference == $conf) and (.home_points != null))))})",
+  "output_path": "ooc-games-by-conference.json"
+}

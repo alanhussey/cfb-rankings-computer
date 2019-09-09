@@ -361,7 +361,27 @@ const STRENGTH_OF_SCHEDULE = new FetchDataSource({
   process(data, teams) {
     const values = fromPairs(teams.map(team => [team, data[team]]));
     const ranks = Object.values(values).sort();
-    debugger;
+    return {
+      defaultValue: this.defaultValue,
+      forTeam: mapValues(values, value => ({
+        value,
+        rank: ranks.indexOf(value) + 1
+      }))
+    };
+  }
+});
+
+const CONF_WIN_PERCENTAGE_OOC = new FetchDataSource({
+  name: "Conference OOC Win Percentage",
+  key: "oocConfWinPercentage",
+  description:
+    "The combined out-of-conference winning percentage for each team's conference. " +
+    "Useful as an approximation of relative conference strength",
+  relativePath: "ooc-conference-winning-percentage-by-team.json",
+  render: getRender("percent"),
+  process(data, teams) {
+    const values = fromPairs(teams.map(team => [team, data[team]]));
+    const ranks = Object.values(values).sort();
     return {
       defaultValue: this.defaultValue,
       forTeam: mapValues(values, value => ({
@@ -377,6 +397,7 @@ export const DATA_SOURCES = [
   MASCOT_WEIGHTS,
   TALENT,
   STRENGTH_OF_SCHEDULE,
+  CONF_WIN_PERCENTAGE_OOC,
   ...NCAA_STATS
 ];
 

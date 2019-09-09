@@ -1,0 +1,6 @@
+{
+  "job": "jq-pipeline",
+  "dependencies": ["ooc-games-by-conference"],
+  "pipeline": ".[0] | with_entries(.key as $conf | .value as $games | .value = ($games | (map(if (.home_points == .away_points) then .5 else if (.home_points > .away_points) then if (.home_conference == $conf) then 1 else 0 end else if (.away_conference == $conf) then 1 else 0 end end end) | add // 0) / ($games | length // 1)))",
+  "output_path": "ooc-conference-winning-percentage.json"
+}
