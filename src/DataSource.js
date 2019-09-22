@@ -376,7 +376,8 @@ const CONF_WIN_PERCENTAGE_OOC = new FetchDataSource({
   key: "oocConfWinPercentage",
   description:
     "The combined out-of-conference winning percentage for each team's conference. " +
-    "Useful as an approximation of relative conference strength",
+    "Useful as an approximation of relative conference strength. " +
+    "For independent teams their own winning percentage is reported.",
   relativePath: "ooc-conference-winning-percentage-by-team.json",
   render: getRender("percent"),
   process(data, teams) {
