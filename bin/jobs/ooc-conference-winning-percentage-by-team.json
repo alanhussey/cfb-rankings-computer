@@ -1,6 +1,10 @@
 {
   "job": "jq-pipeline",
-  "dependencies": ["fbs-teams", "ooc-conference-winning-percentage"],
-  "pipeline": ". as [$teams, $ooc] | $teams | with_entries(.value = $ooc[.value.conference])",
+  "dependencies": [
+    "fbs-teams",
+    "ooc-conference-winning-percentage",
+    "ncaa-stats-winning-percentage"
+  ],
+  "pipeline": ". as [$teams, $ooc, $winP] | $teams | with_entries(.value as $team | .value = if $team.conference == \"FBS Independents\" then $winP[$team.school] else $ooc[$team.conference] end)",
   "output_path": "ooc-conference-winning-percentage-by-team.json"
 }
