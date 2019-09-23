@@ -1,0 +1,11 @@
+{
+  "job": "jq-pipeline",
+  "dependencies": [
+    "played-teams",
+    "ncaa-stats-wins",
+    "ncaa-stats-ties",
+    "ncaa-stats-games-played"
+  ],
+  "pipeline": ". as [$opponents, $wins, $ties, $gamesPlayed] | $opponents | with_entries(.value = ((((.value | map($wins[.]) | add) // 0)) + (((.value | map($ties[.]) | add) // 0) / 2)) / ((.value | map($gamesPlayed[.]) | add) // 1))",
+  "output_path": "opponent-winning-percentage.json"
+}

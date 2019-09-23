@@ -356,8 +356,29 @@ const TALENT = new FetchDataSource({
 const STRENGTH_OF_SCHEDULE = new FetchDataSource({
   name: "Strength of schedule",
   key: "sos",
-  description: "Combined record of all opponents",
+  description:
+    "Combined record of each team's opponents, excluding games against that team",
+  category: CATEGORY_OVERALL,
   relativePath: "strength-of-schedule.json",
+  process(data, teams) {
+    const values = fromPairs(teams.map(team => [team, data[team]]));
+    const ranks = Object.values(values).sort();
+    return {
+      defaultValue: this.defaultValue,
+      forTeam: mapValues(values, value => ({
+        value,
+        rank: ranks.indexOf(value) + 1
+      }))
+    };
+  }
+});
+
+const OPPONENT_WINNING_PERCENTAGE = new FetchDataSource({
+  name: "Opponent winning percentage",
+  key: "opponentWinPercentage",
+  description: "Combined record of each team's opponents",
+  category: CATEGORY_OVERALL,
+  relativePath: "opponent-winning-percentage.json",
   process(data, teams) {
     const values = fromPairs(teams.map(team => [team, data[team]]));
     const ranks = Object.values(values).sort();
@@ -398,6 +419,7 @@ export const DATA_SOURCES = [
   MASCOT_WEIGHTS,
   TALENT,
   STRENGTH_OF_SCHEDULE,
+  OPPONENT_WINNING_PERCENTAGE,
   CONF_WIN_PERCENTAGE_OOC,
   ...NCAA_STATS
 ];

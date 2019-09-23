@@ -41,7 +41,7 @@ for season in $(seq 2018 "$CURRENT_SEASON"); do
             xargs
     )
     # reduce by the number of jobs already completed
-    for job_path in "$JOBSDIR"/*; do
+    for job_path in "$JOBSDIR"/*.json; do
         if job_completed "$job_path"; then
             jobs_remaining=$(bc <<<"$jobs_remaining - 1")
         fi
@@ -49,7 +49,7 @@ for season in $(seq 2018 "$CURRENT_SEASON"); do
 
     # perpetually loop over all the jobs until they've all been completed
     while [ "$jobs_remaining" -ne 0 ]; do
-        for job_path in "$JOBSDIR"/*; do
+        for job_path in "$JOBSDIR"/*.json; do
             if job_completed "$job_path"; then
                 continue
             fi
