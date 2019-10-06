@@ -32,7 +32,7 @@ const TAGLINE = sample([
 ]);
 
 function getQueryParams() {
-  return Object.fromEntries(
+  return fromPairs(
     document.location.search
       .replace(/^\?/, "")
       .split("&")

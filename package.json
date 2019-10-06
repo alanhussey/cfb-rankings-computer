@@ -24,7 +24,7 @@
     "build": "react-scripts build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!mathjs)/\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
