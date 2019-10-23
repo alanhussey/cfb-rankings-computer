@@ -129,7 +129,7 @@ class NCAAStatDataSource extends FetchDataSource {
 
     super({
       ...options,
-      key: camelCase(slug),
+      key: options.key || camelCase(slug),
       relativePath: `ncaa-stats/${slug}.json`,
       render: getRender(options.dataType)
     });
@@ -254,6 +254,7 @@ const NCAA_STATS = [
   { name: "Turnovers Lost", category: CATEGORY_OVERALL, defaultOrder: "asc" },
   {
     name: "Winning Percentage",
+    key: "winPercentage",
     category: CATEGORY_OVERALL,
     dataType: "percent"
   },
