@@ -20,7 +20,7 @@ function makeScoringFn(expression) {
 }
 
 const INITIAL_EQUATION =
-  "100 * (totalOffense / (totalOffense + totalDefense)) * winningPercentage / PI";
+  "100 * (totalOffense / (totalOffense + totalDefense)) * winPercentage / PI";
 
 const CODE_FONT_FAMILY =
   '"Fira code", "Fira Mono", Inconsolata, Menlo, monospace';

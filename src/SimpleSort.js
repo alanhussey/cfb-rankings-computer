@@ -215,7 +215,7 @@ export default function SimpleSort({
 }) {
   useEffect(() => {
     setFactors([
-      { key: "winningPercentage", order: DESCENDING },
+      { key: "winPercentage", order: DESCENDING },
       { key: "mascotWeight", order: DESCENDING }
     ]);
   }, [setFactors]);
