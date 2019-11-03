@@ -6,10 +6,13 @@ import { highlight, languages } from "prismjs/components/prism-core";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 
+import Emoji from "./Emoji";
 import { DATA_SOURCES } from "./DataSource";
 import rankBy from "./rankBy";
 import Ranks from "./Ranks";
 import { DESCENDING } from "./constants";
+import getBaseURL from "./getBaseURL";
+import URLSearchParamsSchema from "./URLSearchParamsSchema";
 
 const math = create(all);
 
@@ -65,8 +68,18 @@ function EquationEditorRankedTeams({ teams }) {
 const isSubset = (subset, superset) =>
   difference(subset, superset).length === 0;
 
+const searchParamsSchema = new URLSearchParamsSchema({
+  system: String,
+  equation: String
+});
+
 export default function EquationEditor({ factors, addFactors, teams }) {
-  const [equation, setEquation] = useState(INITIAL_EQUATION);
+  const { equation: initialEquation } = useMemo(
+    () => searchParamsSchema.decodeURL(document.location),
+    []
+  );
+
+  const [equation, setEquation] = useState(initialEquation || INITIAL_EQUATION);
 
   // All the references in the equation that are valid sources
   const desiredSources = useMemo(() => {
@@ -134,6 +147,19 @@ export default function EquationEditor({ factors, addFactors, teams }) {
           </li>
         ))}
       </ol>
+
+      <p style={{ display: "none" }}>
+        <a
+          href={`${getBaseURL(document.location)}?${searchParamsSchema.encode({
+            system: "equation",
+            equation
+          })}`}
+          // eslint-disable-next-line react/jsx-no-target-blank
+          target="_blank"
+        >
+          Share <Emoji emoji="🔗" label="link" />
+        </a>
+      </p>
 
       <CodeEditor code={equation} setCode={setEquation} error={error} />
 

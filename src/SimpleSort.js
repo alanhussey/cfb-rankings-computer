@@ -3,11 +3,15 @@ import groupBy from "lodash/groupBy";
 import React, { useMemo, useEffect, useState, useCallback } from "react";
 import FuzzySearch from "fuzzy-search";
 import classnames from "classnames";
+
+import Emoji from "./Emoji";
 import { DATA_SOURCES, CATEGORIES } from "./DataSource";
 import SimpleSortRankedTeams from "./SimpleSortRankedTeams";
 import rankBy from "./rankBy";
 import { ASCENDING, DESCENDING, ORDER_ARROW, ORDER_LABEL } from "./constants";
 import Button from "./Button";
+import URLSearchParamsSchema from "./URLSearchParamsSchema";
+import getBaseURL from "./getBaseURL";
 
 const SOURCES_BY_CATEGORY = sortBy(
   Object.entries(groupBy(DATA_SOURCES, source => source.category)),
@@ -207,18 +211,41 @@ function AvailableDataSources({ factors, addFactors }) {
   );
 }
 
+const searchParamsSchema = new URLSearchParamsSchema({
+  system: String,
+  factors: Array(String)
+});
+
+function factorFromURLString(factor) {
+  return {
+    key: factor.replace(/^[+-]/, ""),
+    order: factor.startsWith("-") ? DESCENDING : ASCENDING
+  };
+}
+
+function factorToURLString(factor) {
+  return `${factor.order === DESCENDING ? "-" : ""}${factor.key}`;
+}
+
+const DEFAULT_FACTORS = ["-winPercentage", "-mascotWeight"];
 export default function SimpleSort({
   factors,
   setFactors,
   addFactors,
   teams: teamsWithFactors
 }) {
+  const { factors: initialFactors } = useMemo(
+    () => searchParamsSchema.decodeURL(document.location),
+    []
+  );
+
   useEffect(() => {
-    setFactors([
-      { key: "winPercentage", order: DESCENDING },
-      { key: "mascotWeight", order: DESCENDING }
-    ]);
-  }, [setFactors]);
+    setFactors(
+      (initialFactors.length ? initialFactors : DEFAULT_FACTORS).map(
+        factorFromURLString
+      )
+    );
+  }, [initialFactors, setFactors]);
 
   const toggleStatOrder = useCallback(
     key => setFactors(toggleOrderForFactorByKey(factors, key)),
@@ -245,6 +272,19 @@ export default function SimpleSort({
       </p>
 
       <SelectedFactors factors={factors} setFactors={setFactors} />
+
+      <p style={{ display: "none" }}>
+        <a
+          href={`${getBaseURL(document.location)}?${searchParamsSchema.encode({
+            system: "simple-sort",
+            factors: factors.map(factorToURLString)
+          })}`}
+          // eslint-disable-next-line react/jsx-no-target-blank
+          target="_blank"
+        >
+          Share <Emoji emoji="🔗" label="link" />
+        </a>
+      </p>
 
       <AvailableDataSources
         factors={factors}

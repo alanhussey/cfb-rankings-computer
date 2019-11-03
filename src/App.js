@@ -11,6 +11,7 @@ import { FBS_TEAMS, DATA_SOURCES } from "./DataSource";
 import SimpleSort from "./SimpleSort";
 import EquationEditor from "./EquationEditor";
 import "./App.css";
+import URLSearchParamsSchema from "./URLSearchParamsSchema";
 
 const EloPlaceholder = () => <p>Coming soon.</p>;
 
@@ -31,26 +32,23 @@ const TAGLINE = sample([
   "Proving once and for all that computers hate your team"
 ]);
 
-function getQueryParams() {
-  return fromPairs(
-    document.location.search
-      .replace(/^\?/, "")
-      .split("&")
-      .map(kv => kv.split("="))
-  );
-}
-const getQueryParam = param => getQueryParams()[param];
+const searchParamsSchema = new URLSearchParamsSchema({
+  system: String,
+  season: Number
+});
 
+const getQueryParam = (param, defaultValue = null) =>
+  searchParamsSchema.decodeURL(document.location)[param] || defaultValue;
+
+const NOW = new Date();
 const FIRST_SEASON = 2018;
 const CURRENT_SEASON =
   // Last year if we're currently in the first half of this year
-  new Date().getFullYear() + (new Date().getMonth() < 7 ? -1 : 0);
+  NOW.getFullYear() + (NOW.getMonth() <= 6 ? -1 : 0);
 const SEASONS = range(FIRST_SEASON, CURRENT_SEASON + 1);
 
 function App() {
-  const [season, setSeason] = useState(
-    getQueryParam("season") || new Date().getFullYear().toString()
-  );
+  const [season, setSeason] = useState(getQueryParam("season", CURRENT_SEASON));
 
   // All FBS teams
   const [teams, setTeams] = useState(null);
@@ -111,7 +109,7 @@ function App() {
   }, [teams, dataSources, factors]);
 
   const [rankingSystem, setRankingSystem] = useState(
-    getQueryParam("system") || ""
+    getQueryParam("system", "")
   );
 
   const SystemComp = get(
