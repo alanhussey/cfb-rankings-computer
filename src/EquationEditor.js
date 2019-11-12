@@ -84,8 +84,7 @@ export default function EquationEditor({ factors, addFactors, teams }) {
   // All the references in the equation that are valid sources
   const desiredSources = useMemo(() => {
     // All named references in the equation
-    const variables = [...new Set(equation.match(/[A-ZA-z]+/g))];
-
+    const variables = [...new Set(equation.match(/[A-Za-z]+/g))];
     return variables
       .map(variable => DATA_SOURCES.find(source => source.key === variable))
       .filter(Boolean);
