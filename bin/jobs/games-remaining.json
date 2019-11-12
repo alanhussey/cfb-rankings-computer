@@ -1,0 +1,6 @@
+{
+  "job": "jq-pipeline",
+  "dependencies": ["fbs-teams", "ncaa-stats-games-played", "games-by-team"],
+  "pipeline": ". as [$teams, $gamesPlayed, $games] | reduce $teams[] as $team ({}; . + {($team.school): (($games[$team.school] | length) - $gamesPlayed[$team.school])})",
+  "output_path": "games-remaining.json"
+}

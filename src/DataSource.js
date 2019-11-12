@@ -415,6 +415,27 @@ const CONF_WIN_PERCENTAGE_OOC = new FetchDataSource({
   }
 });
 
+const GAMES_REMAINING = new FetchDataSource({
+  name: "Games Remaining",
+  key: "gamesRemaining",
+  category: CATEGORY_OVERALL,
+  description:
+    "The number of games remaining. " +
+    "Useful for projecting stats out to the end of the season.",
+  relativePath: "games-remaining.json",
+  process(data, teams) {
+    const values = fromPairs(teams.map(team => [team, data[team]]));
+    const ranks = Object.values(values).sort();
+    return {
+      defaultValue: this.defaultValue,
+      forTeam: mapValues(values, value => ({
+        value,
+        rank: ranks.indexOf(value) + 1
+      }))
+    };
+  }
+});
+
 export const DATA_SOURCES = [
   RANDOM,
   MASCOT_WEIGHTS,
@@ -422,6 +443,7 @@ export const DATA_SOURCES = [
   STRENGTH_OF_SCHEDULE,
   OPPONENT_WINNING_PERCENTAGE,
   CONF_WIN_PERCENTAGE_OOC,
+  GAMES_REMAINING,
   ...NCAA_STATS
 ];
 
