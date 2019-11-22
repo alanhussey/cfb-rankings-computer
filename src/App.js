@@ -4,7 +4,7 @@ import sample from "lodash/sample";
 import get from "lodash/get";
 import keyBy from "lodash/keyBy";
 import range from "lodash/range";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useReducer } from "react";
 import classnames from "classnames";
 
 import { FBS_TEAMS, DATA_SOURCES } from "./DataSource";
@@ -47,6 +47,13 @@ const CURRENT_SEASON =
   NOW.getFullYear() + (NOW.getMonth() <= 6 ? -1 : 0);
 const SEASONS = range(FIRST_SEASON, CURRENT_SEASON + 1);
 
+const initialDataSources = fromPairs(
+  DATA_SOURCES.map(source => [
+    source.key,
+    { loading: false, error: null, data: null }
+  ])
+);
+
 function App() {
   const [season, setSeason] = useState(getQueryParam("season", CURRENT_SEASON));
 
@@ -63,9 +70,48 @@ function App() {
   const addFactors = f => setFactors(uniqBy([...factors, ...f], "key"));
 
   // Available data points
-  const [dataSources, setDataSources] = useState(
-    fromPairs(DATA_SOURCES.map(source => [source.key, null]))
-  );
+  const [dataSources, dispatch] = useReducer((state, action) => {
+    const key = get(action, "source.key", null);
+
+    switch (action.type) {
+      case "fetching":
+        return {
+          ...state,
+          [key]: {
+            ...(state[key] || {}),
+            loading: true,
+            error: null,
+            data: null
+          }
+        };
+
+      case "fetched":
+        return {
+          ...state,
+          [key]: {
+            ...(state[key] || {}),
+            loading: false,
+            error: null,
+            data: action.data
+          }
+        };
+
+      case "failed":
+        return {
+          ...state,
+          [key]: {
+            ...(state[key] || {}),
+            loading: false,
+            error: action.error,
+            data: null
+          }
+        };
+
+      default:
+        return state;
+    }
+  }, initialDataSources);
+
   useEffect(() => {
     async function fetchSources() {
       const teamNames = Object.keys(teams);
@@ -74,18 +120,26 @@ function App() {
       const desiredDataSources = DATA_SOURCES.filter(source =>
         selectedSources.includes(source.key)
       );
-      const fetchedSources = await Promise.all(
-        desiredDataSources.map(async source => {
-          const data = await source.fetch({ season });
-          return [source.key, source.process(data, teamNames)];
-        })
-      );
+      desiredDataSources.forEach(async source => {
+        const dataSource = dataSources[source.key];
+        if (dataSource.loading || dataSource.data != null) return;
 
-      setDataSources(fromPairs(fetchedSources));
+        dispatch({ type: "fetching", source });
+        try {
+          const data = await source.fetch({ season });
+          dispatch({
+            type: "fetched",
+            source,
+            data: source.process(data, teamNames)
+          });
+        } catch (error) {
+          dispatch({ type: "failed", source, error });
+        }
+      });
     }
 
     if (teams != null) fetchSources();
-  }, [factors, season, teams]);
+  }, [dataSources, factors, season, teams]);
 
   // Teams with data points mixed in
   const teamsWithFactors = useMemo(() => {
@@ -100,7 +154,7 @@ function App() {
           factor.key,
           get(
             dataSources,
-            [factor.key, "forTeam", team.school, "value"],
+            [factor.key, "data", "forTeam", team.school, "value"],
             dataSources[factor.key].defaultValue
           )
         ])
