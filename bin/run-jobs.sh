@@ -7,7 +7,8 @@ set -e
 if [[ $(date +"%-m") -gt 7 ]]; then
     CURRENT_SEASON=$(date +"%Y")
 else
-    CURRENT_SEASON=$(date -v-1y +"%Y")
+    # Try a couple different ways to calculate "last year"
+    CURRENT_SEASON=$(date --date='-1 year' +"%Y" || date -v-1y +"%Y")
 fi
 
 SCRIPTDIR="$(
