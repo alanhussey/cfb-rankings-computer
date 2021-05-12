@@ -8,7 +8,7 @@
     "fuzzy-search": "^3.0.1",
     "gh-pages": "^2.1.1",
     "lodash": "^4.17.15",
-    "mathjs": "^6.0.4",
+    "mathjs": "^7.5.1",
     "mkdirp": "^0.5.1",
     "ncaa-stats": "^2.0.0",
     "prismjs": "^1.17.1",
