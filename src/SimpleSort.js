@@ -228,6 +228,7 @@ function factorToURLString(factor) {
 }
 
 const DEFAULT_FACTORS = ["-winPercentage", "-mascotWeight"];
+
 export default function SimpleSort({
   factors,
   setFactors,
@@ -273,7 +274,7 @@ export default function SimpleSort({
 
       <SelectedFactors factors={factors} setFactors={setFactors} />
 
-      <p style={{ display: "none" }}>
+      <p>
         <a
           href={`${getBaseURL(document.location)}?${searchParamsSchema.encode({
             system: "simple-sort",

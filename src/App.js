@@ -5,6 +5,7 @@ import get from "lodash/get";
 import keyBy from "lodash/keyBy";
 import range from "lodash/range";
 import React, { useState, useEffect, useMemo, useReducer } from "react";
+import { Switch, Route, Link } from "react-router-dom";
 import classnames from "classnames";
 
 import { FBS_TEAMS, DATA_SOURCES } from "./DataSource";
@@ -46,6 +47,88 @@ const CURRENT_SEASON =
   // Last year if we're currently in the first half of this year
   NOW.getFullYear() + (NOW.getMonth() <= 6 ? -1 : 0);
 const SEASONS = range(FIRST_SEASON, CURRENT_SEASON + 1);
+
+function SelectRankingSystem({ rankingSystem, setRankingSystem }) {
+  return (
+    <div>
+      {RANKING_SYSTEMS.map(({ id, name }) => (
+        <label
+          key={id}
+          className={classnames("Select Select--ranking-system", {
+            "Select--selected": id === rankingSystem
+          })}
+        >
+          <input
+            key={id}
+            onChange={event => setRankingSystem(event.target.value)}
+            type="radio"
+            value={id}
+            checked={id === rankingSystem}
+          />
+          {name}
+        </label>
+      ))}
+    </div>
+  );
+}
+
+function SelectSeason({ season, setSeason }) {
+  return (
+    <label style={{ float: "right" }}>
+      Season{" "}
+      <select
+        value={season}
+        onChange={event => setSeason(Number(event.target.value))}
+      >
+        {[...SEASONS].reverse().map(year => (
+          <option key={year} value={year}>
+            {year}-{year + 1}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function Header() {
+  return (
+    <header>
+      <h1>rankings.computer</h1>
+      <small>{TAGLINE}</small>
+    </header>
+  );
+}
+
+function Editor({
+  rankingSystem,
+  setRankingSystem,
+  factors,
+  setFactors,
+  addFactors,
+  teams
+}) {
+  const SystemComp = get(
+    RANKING_SYSTEMS_BY_ID,
+    [rankingSystem, "Component"],
+    () => null
+  );
+
+  return (
+    <>
+      <h2>Build your own computer ranking</h2>
+      <label>Choose your ranking system:</label>
+
+      <SelectRankingSystem {...{ rankingSystem, setRankingSystem }} />
+
+      <SystemComp
+        factors={factors}
+        setFactors={setFactors}
+        addFactors={addFactors}
+        teams={teams}
+      />
+    </>
+  );
+}
 
 const initialDataSources = fromPairs(
   DATA_SOURCES.map(source => [
@@ -166,62 +249,105 @@ function App() {
     getQueryParam("system", "")
   );
 
-  const SystemComp = get(
-    RANKING_SYSTEMS_BY_ID,
-    [rankingSystem, "Component"],
-    () => null
-  );
-
   return (
     <>
-      <header>
-        <h1>rankings.computer</h1>
-        <small>{TAGLINE}</small>
-      </header>
+      <Header />
       <main>
-        <label style={{ float: "right" }}>
-          Season{" "}
-          <select
-            value={season}
-            onChange={event => setSeason(Number(event.target.value))}
-          >
-            {[...SEASONS].reverse().map(year => (
-              <option key={year} value={year}>
-                {year}-{year + 1}
-              </option>
-            ))}
-          </select>
-        </label>
+        <nav
+          className="sidebar"
+          style={{ float: "left", border: "1px solid red" }}
+        >
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+              <br />
+              <Switch>
+                <Route exact path="/" component={() => "info"} />
+              </Switch>
+            </li>
+            <li>
+              <Link to="/edit">Edit</Link>
+              <br />
+              <Switch>
+                <Route path="/edit" component={() => "Make your own!"} />
+              </Switch>
+            </li>
+            <li>
+              <Link to="/rankings">Rankings</Link>
+              <br />
+              <Switch>
+                <Route
+                  path="/rankings"
+                  component={() => "Look at all those rankings"}
+                />
+              </Switch>
+            </li>
+            <Switch>
+              <Route component={() => null} />
+            </Switch>
+          </ul>
+        </nav>
 
-        <h2>Build your own computer ranking</h2>
-        <label>Choose your ranking system:</label>
-
-        <div>
-          {RANKING_SYSTEMS.map(({ id, name }) => (
-            <label
-              key={id}
-              className={classnames("Select Select--ranking-system", {
-                "Select--selected": id === rankingSystem
-              })}
-            >
-              <input
-                key={id}
-                onChange={event => setRankingSystem(event.target.value)}
-                type="radio"
-                value={id}
-                checked={id === rankingSystem}
-              />
-              {name}
-            </label>
-          ))}
-        </div>
-
-        <SystemComp
-          factors={factors}
-          setFactors={setFactors}
-          addFactors={addFactors}
-          teams={teamsWithFactors}
-        />
+        <Switch>
+          <Route
+            exact
+            path="/"
+            component={() => (
+              <>
+                <h2>Hello</h2>
+                <p>Home</p>
+                <p>
+                  <Link to="/edit">Create your own ranking</Link>
+                </p>
+              </>
+            )}
+          />
+          <Route
+            path="/edit"
+            component={() => (
+              <>
+                <SelectSeason {...{ season, setSeason }} />
+                <Editor
+                  {...{
+                    rankingSystem,
+                    setRankingSystem,
+                    factors,
+                    setFactors,
+                    addFactors,
+                    teams: teamsWithFactors
+                  }}
+                />
+              </>
+            )}
+          />
+          <Route
+            path="/rankings"
+            component={({ location: { search } }) => (
+              <>
+                <SelectSeason {...{ season, setSeason }} />
+                <pre>
+                  {JSON.stringify(searchParamsSchema.decode(search), null, 2)}
+                </pre>
+              </>
+            )}
+          />
+          <Route
+            component={() => (
+              <>
+                <h2>Offsides (404)</h2>
+                <p>Whatever it is you're looking for, I can't find it.</p>
+                <p>
+                  If you think this page should exist,{" "}
+                  <s>challenge the ruling</s>{" "}
+                  <a href="https://github.com/alanhussey/cfb-rankings-computer/issues">
+                    file an issue
+                  </a>
+                  .
+                </p>
+              </>
+            )}
+          />
+        </Switch>
       </main>
       <footer />
     </>

@@ -68,6 +68,37 @@ describe(encode, () => {
 });
 
 describe(URLSearchParamsSchema, () => {
+  it("validates the given schema", () => {
+    expect(() => {
+      new URLSearchParamsSchema({
+        propA: String,
+        propB: Number,
+        propC: Array(String),
+        propD: Array(Number)
+      });
+    }).not.toThrow();
+
+    expect(() => {
+      new URLSearchParamsSchema({
+        propE: Object
+      });
+    }).toThrowError(
+      new TypeError(
+        "Attempted to create a URLSearchParamsSchema with an unsupported type for `propE` (Object)"
+      )
+    );
+
+    expect(() => {
+      new URLSearchParamsSchema({
+        propF: null
+      });
+    }).toThrowError(
+      new TypeError(
+        "Attempted to create a URLSearchParamsSchema but `propF` has no type specified"
+      )
+    );
+  });
+
   const schema = new URLSearchParamsSchema({
     number: Number,
     letter: String,

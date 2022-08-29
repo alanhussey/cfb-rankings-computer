@@ -147,7 +147,7 @@ export default function EquationEditor({ factors, addFactors, teams }) {
         ))}
       </ol>
 
-      <p style={{ display: "none" }}>
+      <p>
         <a
           href={`${getBaseURL(document.location)}?${searchParamsSchema.encode({
             system: "equation",
